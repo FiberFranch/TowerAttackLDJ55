@@ -18,6 +18,8 @@
     MODEL(rectangle)
 
 #define LIST_OF_SHADERS \
+    SHADER(map) \
+    SHADER(lookup) \
     SHADER(lighting)
 
 typedef enum {

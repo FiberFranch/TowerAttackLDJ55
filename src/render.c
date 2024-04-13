@@ -11,7 +11,7 @@
 
 Camera CreateCamera() {
     Camera3D camera = { 0 };
-    camera.position = (Vector3){ 0.0f, 2.0f, 6.0f }; // Camera position
+    camera.position = (Vector3){ 0.0f, 2.0f, 5.0f }; // Camera position
     camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };      // Camera looking at point
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
     camera.fovy = 45.0f;                                // Camera field-of-view Y
@@ -36,13 +36,18 @@ Model CreateHeightMapFromGrid(const Grid* grid, float dimension) {
     Image* defaultImage = GetSpriteById(SPRITE_ID_default);
     Color* pathColors = LoadImageColors(*pathImage);
     Color* defaultColors = LoadImageColors(*defaultImage);
-    Image mapDiffuseImage;
+    Image mapDiffuseImage = {0};
     mapDiffuseImage.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
     mapDiffuseImage.mipmaps = 1;
     mapDiffuseImage.width = grid->width * defaultImage->width;
     mapDiffuseImage.height = grid->height * defaultImage->height;
     mapDiffuseImage.data = calloc(mapDiffuseImage.width*mapDiffuseImage.height, 4*sizeof(char));
-
+    Image mapTilesImage = {0};
+    mapTilesImage.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
+    mapTilesImage.mipmaps = 1;
+    mapTilesImage.width = grid->width * defaultImage->width;
+    mapTilesImage.height = grid->height * defaultImage->height;
+    mapTilesImage.data = calloc(mapDiffuseImage.width*mapDiffuseImage.height, 4*sizeof(char));
     // Construct the diffuse image from the tiles
     for (unsigned int i = 0; i < grid->width; i++) {
         for (unsigned int j = 0; j < grid->height; j++) {
@@ -60,6 +65,8 @@ Model CreateHeightMapFromGrid(const Grid* grid, float dimension) {
                     const unsigned int index =(x + defaultImage->width*i) + mapDiffuseImage.width * (y + defaultImage->height*j);
                     /* printf("index %i / %i\n", index, mapDiffuseImage.width * mapDiffuseImage.height); */
                     ((Color*)mapDiffuseImage.data)[index] = colors[x + defaultImage->width * y];
+                    unsigned int gridIndex =  (unsigned int)(i + grid->width * j);
+                    *(unsigned int*)(&((Color*)mapTilesImage.data)[index]) = gridIndex; // Set grid index
                 }
             }
         }
@@ -85,10 +92,69 @@ Model CreateHeightMapFromGrid(const Grid* grid, float dimension) {
     Mesh heightmap_mesh = GenMeshHeightmap(heightmapImage, (Vector3){dimension, dimension, dimension});
     Model heightmap_model = LoadModelFromMesh(heightmap_mesh);
     heightmap_model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTextureFromImage(mapDiffuseImage);
-    heightmap_model.materials[0].shader = *GetShaderById(SHADER_ID_lighting);
+    heightmap_model.materials[0].maps[MATERIAL_MAP_NORMAL].texture = LoadTextureFromImage(mapTilesImage);
+    heightmap_model.materials[0].shader = *GetShaderById(SHADER_ID_map);
 
-    free(heightmapImage.data);
+    UnloadImageColors(defaultColors);
+    UnloadImageColors(pathColors);
+    UnloadImage(mapDiffuseImage);
+    UnloadImage(mapTilesImage);
+    UnloadImage(heightmapImage);
     return heightmap_model;
+}
+
+typedef struct {
+    int* data;
+    unsigned int width, height;
+} GridLookup;
+
+void UnloadGridLookup(GridLookup lookup) {
+    free(lookup.data);
+}
+
+GridLookup LoadGridLookup(Camera camera, Model levelHeightMap, Vector3 position) {
+    // Render the indices
+    RenderTexture2D FBO = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+    levelHeightMap.materials[0].shader = *GetShaderById(SHADER_ID_lookup);
+    BeginTextureMode(FBO);
+    ClearBackground(WHITE);
+    BeginMode3D(camera);
+    DrawModel(levelHeightMap, position, 1.0, WHITE);
+    EndMode3D();
+    EndTextureMode();
+
+    Image renderedImage = LoadImageFromTexture(FBO.texture);
+    /* ExportImage(renderedImage, "result.png"); */
+    Color* colors = LoadImageColors(renderedImage);
+
+    GridLookup lookup = {0};
+    lookup.width = FBO.texture.width;
+    lookup.height = FBO.texture.height;
+    lookup.data = calloc(lookup.width * lookup.height, sizeof(int));
+    for (unsigned int i = 0; i < lookup.width; i++) {
+        for (unsigned int j = 0; j < lookup.height; j++) {
+            const int index = i + lookup.width * j;
+            const int index_flipped = i + lookup.width * (lookup.height - j - 1);
+            Color color = colors[index_flipped];
+            color.a = 0;
+            unsigned int tile_index = *(unsigned int*)(&color);
+            lookup.data[index] = (int) tile_index;
+        }
+    }
+
+    levelHeightMap.materials[0].shader = *GetShaderById(SHADER_ID_map);
+    UnloadImage(renderedImage);
+    UnloadImageColors(colors);
+    UnloadRenderTexture(FBO);
+
+    return lookup;
+}
+
+int GetGridIndexFromScreen(GridLookup lookup) {
+    Vector2 pos = GetMousePosition();
+    int index = ((int)pos.x) + lookup.width * ((int)pos.y);
+    /* printf("index = %i\n", lookup.data[index]); */
+    return lookup.data[index];
 }
 
 void DrawLevel() {
@@ -99,12 +165,25 @@ void DrawLevel() {
     Grid grid = LoadGrid("assets/map_test.png");
     Model heightmap_model = CreateHeightMapFromGrid(&grid, map_size);
 
+    int SelectedTileLoc = GetShaderLocation(*GetShaderById(SHADER_ID_map), "selectedTile");
+    int IsPlacableLoc = GetShaderLocation(*GetShaderById(SHADER_ID_map), "isPlacable");
+    int selectedTile = 1000000;
+    int isPlacable = 0;
+    GridLookup lookup = LoadGridLookup(camera, heightmap_model, offset);
+
     while (!WindowShouldClose())
     {
+        selectedTile = GetGridIndexFromScreen(lookup);
+        if (selectedTile < grid.width * grid.height) {
+            if (grid.grid[selectedTile].type == DEFAULT_TILE)
+                isPlacable = 1;
+            else isPlacable = 0;
+        }
+        SetShaderValue(*GetShaderById(SHADER_ID_map), SelectedTileLoc, &selectedTile, SHADER_UNIFORM_INT);
+        SetShaderValue(*GetShaderById(SHADER_ID_map), IsPlacableLoc, &isPlacable, SHADER_UNIFORM_INT);
         BeginDrawing();
         ClearBackground(DARKGRAY);
         /* UpdateCamera(&camera, CAMERA_FREE); */
-
         BeginMode3D(camera);
         DrawModel(heightmap_model, offset, 1.0, WHITE);
         EndMode3D();
@@ -112,5 +191,6 @@ void DrawLevel() {
         EndDrawing();
     }
 
+    UnloadGridLookup(lookup);
     UnloadModel(heightmap_model);
 }
