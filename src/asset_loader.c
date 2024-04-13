@@ -6,6 +6,7 @@
 Texture* textures;
 Image* sprites;
 Model* models;
+Shader* shaders;
 
 #define SPRITE(name) "assets/"#name".png",
 char* SpriteFileNames[] = {
@@ -18,6 +19,12 @@ char* ModelFileNames[] = {
 LIST_OF_MODELS
 };
 #undef MODEL
+
+#define SHADER(name) "assets/shaders/"#name".fs",
+char* FragmentShaderNames[] = {
+LIST_OF_SHADERS
+};
+#undef SHADER
 
 void LoadAllAssets() {
     // Sprites & textures
@@ -34,6 +41,13 @@ void LoadAllAssets() {
     models = calloc(N_MODELS, sizeof(Model));
     for (unsigned int i = 0; i < N_MODELS; i++) {
         models[i] = LoadModel(ModelFileNames[i]);
+    }
+
+    // Shaders
+    const unsigned int N_SHADERS = sizeof(FragmentShaderNames) / sizeof(char*);
+    shaders = calloc(N_SHADERS, sizeof(Shader));
+    for (unsigned int i = 0; i < N_SHADERS; i++) {
+        shaders[i] = LoadShader("assets/shaders/default.vs", FragmentShaderNames[i]);
     }
 }
 
@@ -52,21 +66,26 @@ void UnloadAllAssets() {
         UnloadModel(models[i]);
     }
     free(models);
-}
 
-void ReloadAllAssets() {
-    UnloadAllAssets();
-    LoadAllAssets();
+    const unsigned int N_SHADERS = sizeof(FragmentShaderNames) / sizeof(char*);
+    for (unsigned int i = 0; i < N_SHADERS; i++) {
+        UnloadShader(shaders[i]);
+    }
+    free(shaders);
 }
 
 Image* GetSpriteById(SPRITE_ID id) {
     return &sprites[id];
 }
 
-Texture2D* GetTextureByID(SPRITE_ID id) {
+Texture2D* GetTextureById(SPRITE_ID id) {
     return &textures[id];
 }
 
-Model* GetModelByID(MODEL_ID id) {
+Model* GetModelById(MODEL_ID id) {
     return &models[id];
+}
+
+Shader* GetShaderById(SHADER_ID id) {
+    return &shaders[id];
 }

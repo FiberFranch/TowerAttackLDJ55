@@ -4,6 +4,7 @@
 typedef enum {
 PATH_TILE,
 OBSTACLE_TILE,
+DEFAULT_TILE,
 } TILE_TYPE;
 
 typedef struct {
