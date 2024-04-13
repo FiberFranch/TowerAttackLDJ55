@@ -12,7 +12,7 @@ typedef struct {
     int pos_y;
 } Enemy;
 
-Enemy CreateEnemy(const Image* sprite, const int hitpoints, const int damage, const int speed);
+Enemy CreateEnemy(Image* sprite, const int hitpoints, const int damage, const int speed);
 
 Enemy GetEnemyById(const char* name);
 

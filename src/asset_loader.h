@@ -32,7 +32,7 @@ void UnloadAllAssets();
 
 void ReloadAllAssets();
 
-Image* GetSpriteByID(SPRITE_ID id);
+Image* GetSpriteById(SPRITE_ID id);
 
 Texture2D* GetTextureByID(SPRITE_ID id);
 

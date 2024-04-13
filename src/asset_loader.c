@@ -59,7 +59,7 @@ void ReloadAllAssets() {
     LoadAllAssets();
 }
 
-Image* GetSpriteByID(SPRITE_ID id) {
+Image* GetSpriteById(SPRITE_ID id) {
     return &sprites[id];
 }
 
