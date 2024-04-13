@@ -14,8 +14,11 @@ Grid loadGrid(char *filename) {
         for (int i = 0; i < width; i++) {
             Color pixel = pixels[j * width + i];
 
-            if (pixel.b > 0)
+            if (pixel.b == 100)
                 SetGridTile(&grid, i, j, PATH_TILE);
+
+            if (pixel.b == 200)
+                SetGridTile(&grid, i, j, OBSTACLE_TILE);
         }
     }
 
