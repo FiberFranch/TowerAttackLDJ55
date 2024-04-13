@@ -23,4 +23,6 @@ void SetGridTile(const Grid* grid, unsigned int i, unsigned int j, GridTile tile
 
 GridTile* GetTileFromGrid(const Grid* grid, unsigned int i, unsigned int j);
 
+Grid LoadGrid(char* filename);
+
 #endif // GRID_H_
