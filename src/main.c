@@ -1,4 +1,4 @@
-#include "raylib.h"
+#include <raylib.h>
 
 void InitializeGame() {
     const int initialScreenWidth = 800;
