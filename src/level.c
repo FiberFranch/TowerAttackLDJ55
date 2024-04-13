@@ -27,7 +27,7 @@ EnemyQueue createEnemyQueue(const char* filename) {
     int time;
     int i = 0;
     while (fscanf(file, "%s %d", enemy, &time) == 2) {
-        enemies->enemies[i].enemy = GetEnemyByName(enemy);
+        enemies->enemies[i].enemy = GetEnemyById(enemy);
         enemies->enemies[i].time = time;
         i++;
     }

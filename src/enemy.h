@@ -14,4 +14,6 @@ typedef struct {
 
 Enemy CreateEnemy(const Image* sprite, const int hitpoints, const int damage, const int speed);
 
+Enemy GetEnemyById(const char* name);
+
 #endif // ENEMY_H_
