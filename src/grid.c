@@ -14,8 +14,8 @@ void DestroyGrid(Grid* grid) {
     free(ptr);
 }
 
-void SetGridTile(const Grid* grid, unsigned int i, unsigned int j, GridTile* tile) {
-    grid->grid[i + j * grid->width] = *tile;
+void SetGridTile(const Grid* grid, unsigned int i, unsigned int j, GridTile tile) {
+    grid->grid[i + j * grid->width] = tile;
 }
 
 GridTile* GetTileFromGrid(const Grid* grid, unsigned int i, unsigned int j) {

@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include "raylib.h"
+#include <raylib.h>
 #include "grid.h"
 
 Grid loadGrid(char *filename) {
@@ -14,11 +13,17 @@ Grid loadGrid(char *filename) {
         for (int i = 0; i < width; i++) {
             Color pixel = pixels[j * width + i];
 
-            if (pixel.b == 100)
-                SetGridTile(&grid, i, j, PATH_TILE);
+            if (pixel.b == 100) {
+                GridTile tile;
+                tile.type = PATH_TILE;
+                SetGridTile(&grid, i, j, tile);
+            }
 
-            if (pixel.b == 200)
-                SetGridTile(&grid, i, j, OBSTACLE_TILE);
+            if (pixel.b == 200) {
+                GridTile tile;
+                tile.type = OBSTACLE_TILE;
+                SetGridTile(&grid, i, j, tile);
+            }
         }
     }
 

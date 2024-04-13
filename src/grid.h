@@ -19,7 +19,7 @@ Grid CreateGrid(unsigned int width, unsigned int height);
 
 void DestroyGrid(Grid* grid);
 
-void SetGridTile(const Grid* grid, unsigned int i, unsigned int j, GridTile* tile);
+void SetGridTile(const Grid* grid, unsigned int i, unsigned int j, GridTile tile);
 
 GridTile* GetTileFromGrid(const Grid* grid, unsigned int i, unsigned int j);
 
