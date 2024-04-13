@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-project(example)
+project(TowerAttack)
 
 file(GLOB SOURCE_FILES
   src/*.c

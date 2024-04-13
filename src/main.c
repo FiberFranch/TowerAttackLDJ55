@@ -1,9 +1,6 @@
 #include "raylib.h"
 
-int main(void)
-{
-    // Initialization
-    //--------------------------------------------------------------------------------------
+void InitializeGame() {
     const int initialScreenWidth = 800;
     const int initialScreenHeight = 450; // 16:9
     InitWindow(initialScreenWidth, initialScreenHeight, "Test");
@@ -11,6 +8,16 @@ int main(void)
     InitAudioDevice();
 
     SetTargetFPS(60);
+}
+
+void DeinitializeGame() {
+    CloseAudioDevice();
+    CloseWindow();        // Close window and OpenGL context
+}
+
+int main(void)
+{
+    InitializeGame();
 
     while (!WindowShouldClose())
     {
@@ -22,12 +29,6 @@ int main(void)
 
         EndDrawing();
     }
-
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    CloseAudioDevice();
-    CloseWindow();        // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
 
     return 0;
 };
