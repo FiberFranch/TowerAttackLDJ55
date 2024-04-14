@@ -4,11 +4,11 @@
 #include "render.h"
 
 void InitializeGame() {
-    const int initialScreenWidth = 800;
-    const int initialScreenHeight = 450; // 16:9
+    const int initialScreenWidth = 1920;
+    const int initialScreenHeight = 1080; // 16:9
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(initialScreenWidth, initialScreenHeight, "Test");
-    SetWindowState(FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_MAXIMIZED);
+    /* SetWindowState(FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_MAXIMIZED); */
     InitAudioDevice();
 
     LoadAllAssets();

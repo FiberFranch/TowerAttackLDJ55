@@ -6,6 +6,9 @@
 // Set sprite names here
 // Sprites should be png images placed inside the assets/ directory
 #define LIST_OF_SPRITES \
+    SPRITE(path) \
+    SPRITE(default) \
+    SPRITE(plant) \
     SPRITE(map_test) \
     SPRITE(heightmap)
 
@@ -13,6 +16,11 @@
 #define LIST_OF_MODELS \
     MODEL(plane) \
     MODEL(rectangle)
+
+#define LIST_OF_SHADERS \
+    SHADER(map) \
+    SHADER(lookup) \
+    SHADER(lighting)
 
 typedef enum {
 #define SPRITE(name) SPRITE_ID_##name,
@@ -26,16 +34,22 @@ LIST_OF_MODELS
 #undef MODEL
 } MODEL_ID;
 
+typedef enum {
+#define SHADER(name) SHADER_ID_##name,
+LIST_OF_SHADERS
+#undef SHADER
+} SHADER_ID;
+
 void LoadAllAssets();
 
 void UnloadAllAssets();
 
-void ReloadAllAssets();
-
 Image* GetSpriteById(SPRITE_ID id);
 
-Texture2D* GetTextureByID(SPRITE_ID id);
+Texture2D* GetTextureById(SPRITE_ID id);
 
-Model* GetModelByID(MODEL_ID id);
+Model* GetModelById(MODEL_ID id);
+
+Shader* GetShaderById(SHADER_ID id);
 
 #endif // ASSET_LOADER_H_

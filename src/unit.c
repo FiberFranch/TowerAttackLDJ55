@@ -1,6 +1,6 @@
 #include <string.h>
 #include "raylib.h"
-#include "unit.h"
+#include "enemy.h"
 #include "asset_loader.h"
 
 Enemy CreateEnemy(Image* sprite, const int hitpoints, const int damage, const int speed) {

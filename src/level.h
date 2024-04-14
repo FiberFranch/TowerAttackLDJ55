@@ -15,7 +15,7 @@ typedef struct {
     int next_enemy;
 } EnemyQueue;
 
-EnemyQueue LoadEnemyQueue();
+EnemyQueue LoadEnemyQueue(char* filename);
 
 void DeleteEnemyQueue(EnemyQueue* queue);
 
@@ -36,10 +36,10 @@ void AddEnemyToEnemyList(EnemyList* list, Enemy enemy);
 void RemoveEnemyFromEnemyList(EnemyList* list, int index);
 
 typedef struct {
-    Summoner summoner;
     EnemyQueue spawn_queue;
-    Grid grid;
     EnemyList current_enemies;
+    Grid grid;
+    Summoner summoner;
 } Level;
 
 #endif // LEVEL_H_

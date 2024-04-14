@@ -35,18 +35,17 @@ Grid LoadGrid(char *filename) {
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; i++) {
             Color pixel = pixels[j * width + i];
+            GridTile tile;
+            tile.type = DEFAULT_TILE;
 
             if (pixel.b == 100) {
-                GridTile tile;
                 tile.type = PATH_TILE;
-                SetGridTile(&grid, i, j, tile);
             }
 
             if (pixel.b == 200) {
-                GridTile tile;
                 tile.type = OBSTACLE_TILE;
-                SetGridTile(&grid, i, j, tile);
             }
+            SetGridTile(&grid, i, j, tile);
         }
     }
     UnloadImageColors(pixels);

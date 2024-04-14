@@ -73,3 +73,4 @@ void RemoveEnemyFromEnemyList(EnemyList* list, int index) {
     }
     list.next_enemy--;
 }
+
