@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include <math.h>
 #include "grid.h"
+#include "raymath.h"
 
 Grid CreateGrid(unsigned int width, unsigned int height) {
     Grid grid;
@@ -55,12 +56,11 @@ Grid LoadGrid(char *filename) {
 }
 
 void GetTileFromPosition(int* tile_x, int* tile_y, const Grid* grid,
-                         Vector2 position, Vector2 map_size,
-                         Vector2 origin_offset) {
+                         Vector2 position, Vector2 map_size) {
     float tile_width = map_size.x / grid->width;
     float tile_height = map_size.y / grid->height;
-    float relative_x = position.x - origin_offset.x;
-    float relative_y = position.y - origin_offset.y;
-    *tile_x = (int)floor(relative_x / tile_width);
-    *tile_y = (int)floor(relative_y / tile_height);
+    Vector2 origin_offset = (Vector2) {0.5f * map_size.x, 0.5f * map_size.y};
+    Vector2 relative = Vector2Subtract(position, origin_offset);
+    *tile_x = (int)floor(relative.x / tile_width);
+    *tile_y = (int)floor(relative.y / tile_height);
 }

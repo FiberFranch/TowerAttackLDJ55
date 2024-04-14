@@ -112,17 +112,14 @@ void DeleteOccupationGrid(OccupationGrid* grid) {
 }
 
 void UpdateOccupationGrid(const EnemyList* enemies, OccupationGrid* occupation,
-                          const Grid* grid, Vector2 map_size,
-                          Vector2 origin_offset) {
+                          const Grid* grid, Vector2 map_size) {
     for (int j = 0; j < occupation->height; j++) {
         for (int i = 0; i < occupation->width; i++)
             occupation->occupied[j * occupation->width + i] = false;
     }
     int tile_x, tile_y;
     for (int i = 0; i < enemies->last_enemy; i++) {
-        GetTileFromPosition(&tile_x, &tile_y, grid,
-                         enemies->enemies[i].position,
-                         map_size, origin_offset);
+        GetTileFromPosition(&tile_x, &tile_y, grid, enemies->enemies[i].position, map_size);
         occupation->occupied[tile_y * occupation->width + tile_x] = true;
     }
 }
@@ -144,94 +141,83 @@ void DeleteDamageGrid(DamageGrid* grid) {
     free(ptr);
 }
 
-void AttemptDealDamage(Summon* summon, const Grid* grid, DamageGrid* damage,
+bool AttemptDealDamage(Summon* summon, const Grid* grid, DamageGrid* damage,
                        const OccupationGrid* occupation, int i, int j) {
     if (occupation->occupied[j * grid->width + i]) {
         damage->damage[j * grid->width + i] += summon->damage;
         summon->cooldown_timer = 0.f;
+        return true;
+    }
+    return false;
+}
+
+void ComputeDirectionOffset(SummonOrientation orientation, int* x, int* y) {
+    switch(orientation) {
+        case FACE_UP:
+            *x = 0;
+            *y = -1;
+            return;
+        case FACE_DOWN:
+            *x = 0;
+            *y = 1;
+            return;
+        case FACE_LEFT:
+            *x = -1;
+            *y = 0;
+            return;
+        case FACE_RIGHT:
+            *x = 1;
+            *y = 0;
+            return;
     }
 }
 
-void AttemptCastAbility(Summon* summon, const Grid* grid,
+bool AttemptCastAbility(Summon* summon, const Grid* grid,
                         const OccupationGrid* occupation, DamageGrid* damage) {
+    bool result = false;
     if (summon->cooldown_timer >= summon->max_cooldown) {
         switch(summon->ability) {
             case PROJECTILE:
-                int x = 0;
-                int y = 0;
-                switch(summon->orientation) {
-                    case FACE_UP:
-                        y = -1;
-                        break;
-                    case FACE_DOWN:
-                        y = 1;
-                        break;
-                    case FACE_LEFT:
-                        x = -1;
-                        break;
-                    case FACE_RIGHT:
-                        x = 1;
-                        break;
-                    default:
-                        break;
-                }
-                AttemptDealDamage(summon, grid, damage, occupation,
-                           summon->grid_x + x,
-                           summon->grid_y + y);
+            {
+                int x, y;
+                ComputeDirectionOffset(summon->orientation, &x, &y);
+                result = AttemptDealDamage(summon, grid, damage, occupation,
+                                           summon->grid_x + x,
+                                           summon->grid_y + y);
                 break;
+            }
             case FLAMES:
-                switch(summon->orientation) {
-                    case FACE_UP:
-                        for (int x = -1; x <= 1; x++) {
-                            AttemptDealDamage(summon, grid, damage, occupation,
-                                       summon->grid_x + x,
-                                       summon->grid_y);
-                        }
-                        break;
-                    case FACE_DOWN:
-                        for (int x = -1; x <= 1; x++) {
-                            AttemptDealDamage(summon, grid, damage, occupation,
-                                       summon->grid_x + x,
-                                       summon->grid_y);
-                        }
-                        break;
-                    case FACE_LEFT:
-                        for (int y = -1; y <= 1; y++) {
-                            AttemptDealDamage(summon, grid, damage, occupation,
-                                       summon->grid_x,
-                                       summon->grid_y + y);
-                        }
-                        break;
-                    case FACE_RIGHT:
-                        for (int y = -1; y <= 1; y++) {
-                            AttemptDealDamage(summon, grid, damage, occupation,
-                                       summon->grid_x,
-                                       summon->grid_y + y);
-                        }
-                        break;
-                    default:
-                        break;
+            {
+                int x, y;
+                ComputeDirectionOffset(summon->orientation, &x, &y);
+                for (int offset = -1; offset <= 1; offset++) {
+                    result = AttemptDealDamage(summon, grid, damage, occupation,
+                                               summon->grid_x + x + offset * (-y),
+                                               summon->grid_y + y + offset * x) || result;
                 }
                 break;
+            }
             case WHIRL:
+            {
                 for (int x = -1; x <= 1; x++) {
                     for (int y = -1; y <= 1; y++) {
                         if (x != 0 && y != 0) {
-                            AttemptDealDamage(summon, grid, damage, occupation,
-                                              summon->grid_x + x,
-                                              summon->grid_y + y);
+                            result = AttemptDealDamage(summon, grid, damage, occupation,
+                                                       summon->grid_x + x,
+                                                       summon->grid_y + y) || result;
                         }
                     }
                 }
                 break;
+            }
             default:
                 break;
         }
     }
+    return result;
 }
 void UpdateDamageGrid(SummonList* summons, const OccupationGrid* occupation,
-                      DamageGrid* damage, const Grid* grid,
-                      Vector2 map_size, Vector2 origin_offset) {
+                      DamageGrid* damage, const Grid* grid, Vector2 map_size) {
     for (int j = 0; j < damage->height; j++) {
         for (int i = 0; i < damage->width; i++)
             damage->damage[j * damage->width + i] = 0;

@@ -56,7 +56,7 @@ void DeleteOccupationGrid(OccupationGrid* grid);
 
 void UpdateOccupationGrid(const EnemyList* enemies,
                           OccupationGrid* occupation, const Grid* grid,
-                          Vector2 map_size, Vector2 origin_offset);
+                          Vector2 map_size);
 
 typedef struct {
     int* damage;
@@ -67,15 +67,15 @@ DamageGrid CreateDamageGrid(int width, int height);
 
 void DeleteDamageGrid(DamageGrid* grid);
 
-void AttemptDealDamage(Summon* summon, const Grid* grid, DamageGrid* damage,
-        const OccupationGrid* occupation, int i, int j);
+bool AttemptDealDamage(Summon* summon, const Grid* grid, DamageGrid* damage,
+                       const OccupationGrid* occupation, int i, int j);
 
-void AttemptCastAbility(Summon* summon, const Grid* grid,
+bool AttemptCastAbility(Summon* summon, const Grid* grid,
                         const OccupationGrid* occupation, DamageGrid* damage);
 
 void UpdateDamageGrid(SummonList* summons, const OccupationGrid* occupation,
                       DamageGrid* damage, const Grid* grid,
-                      Vector2 map_size, Vector2 origin_offset);
+                      Vector2 map_size);
 
 typedef struct {
     EnemyQueue spawn_queue;
