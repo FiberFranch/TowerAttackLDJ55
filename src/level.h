@@ -36,10 +36,10 @@ void AddEnemyToEnemyList(EnemyList* list, Enemy enemy);
 void RemoveEnemyFromEnemyList(EnemyList* list, int index);
 
 typedef struct {
-    EnemyQueue spawn_queue;
-    EnemyList current_enemies;
     Grid grid;
     Summoner summoner;
+    EnemyQueue spawn_queue;
+    EnemyList current_enemies;
 } Level;
 
 void DeleteEnemyQueue();
