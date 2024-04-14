@@ -18,6 +18,7 @@ FACE_RIGHT,
 
 typedef struct {
     float max_cooldown, cooldown_timer;
+    int damage;
     int grid_x, grid_y;
     SummonOrientation orientation;
     Ability ability;

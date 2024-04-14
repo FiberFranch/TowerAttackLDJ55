@@ -68,7 +68,7 @@ DamageGrid CreateDamageGrid(int width, int height);
 void DeleteDamageGrid(DamageGrid* grid);
 
 void AttemptCastAbility(Summon* summon, Grid* grid,
-        OccupationGrid* occupation, DamageGrid* damage);
+                        const OccupationGrid* occupation, DamageGrid* damage);
 
 void UpdateDamageGrid(const SummonList* summons, const OccupationGrid* occupation,
                       DamageGrid* damage, Grid* grid,
