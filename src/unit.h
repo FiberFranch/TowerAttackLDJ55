@@ -6,6 +6,7 @@
 typedef enum {
 PROJECTILE,
 FLAMES,
+WHIRL,
 } Ability;
 
 typedef enum {
@@ -16,7 +17,7 @@ FACE_RIGHT,
 } SummonOrientation;
 
 typedef struct {
-    float Cooldown;
+    float max_cooldown, cooldown_timer;
     int grid_x, grid_y;
     SummonOrientation orientation;
     Ability ability;

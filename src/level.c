@@ -115,14 +115,14 @@ void UpdateOccupationGrid(const EnemyList* enemies, OccupationGrid* occupation,
                          Grid* grid, Vector2 map_size, Vector2 origin_offset) {
     for (int j = 0; j < occupation.height; j++) {
         for (int i = 0; i < occupation.width; i++)
-            occupation.occupied[j * width + i] = false;
+            occupation->occupied[j * occupation.width + i] = false;
     }
     int tile_x, tile_y;
     for (int i = 0; i < enemies->last_enemy; i++) {
         GetTileFromPosition(&tile_x, &tile_y, grid,
                          enemies->enemies[i].position,
                          map_size, origin_offset);
-        grid->occupied[tile_y * width + tile_x] = true;
+        grid->occupied[tile_y * occupation.width + tile_x] = true;
     }
 }
 
@@ -141,4 +141,148 @@ DamageGrid CreateDamageGrid(int width, int height) {
 void DeleteDamageGrid(DamageGrid* grid) {
     int* ptr = grid->damage;
     free(ptr);
+}
+void AttemptCastAbility(Summon* summon, Grid* grid,
+                        OccupationGrid* occupation, DamageGrid* damage) {
+    if (summon->cooldown_timer >= summon->max_cooldown) {
+        switch(summon->ability) {
+            case PROJECTILE:
+                switch(summon->orientation) {
+                    case FACE_UP:
+                        if (occupation->occupied[(summon.grid_y - 1) *
+                                                  grid->width +
+                                                  summon.grid_x]) {
+                            damage->damage[(summon.grid_y - 1) *
+                                             grid->width +
+                                             summon.grid_x] +=
+                                             summon->damage;
+                            summon->cooldown_timer = 0.f;
+                        }
+                        break;
+                    case FACE_DOWN:
+                        if (occupation->occupied[(summon.grid_y + 1) *
+                                                  grid->width +
+                                                  summon.grid_x]) {
+                            damage->damage[(summon.grid_y + 1) *
+                                            grid->width +
+                                            summon.grid_x] +=
+                                            summon->damage;
+                            summon->cooldown_timer = 0.f;
+                        }
+                        break;
+                    case FACE_LEFT:
+                        if (occupation->occupied[(summon.grid_y) *
+                                                   grid->width +
+                                                  summon.grid_x - 1]) {
+                            damage->damage[(summon.grid_y) *
+                                            grid->width +
+                                            summon.grid_x - 1] +=
+                                            summon->damage;
+                            summon->cooldown_timer = 0.f;
+                        }
+                        break;
+                    case FACE_RIGHT:
+                            if (occupation->occupied[(summon.grid_y) *
+                                                      grid->width +
+                                                      summon.grid_x + 1]) {
+                                damage->damage[(summon.gird_y) *
+                                                grid->width +
+                                                summon.grid_x + 1] +=
+                                                summon->damage;
+                                summon->cooldown_timer = 0.f;
+                            }
+                        break;
+                    default:
+                        break;
+
+                break;
+            case FLAMES:
+                switch(summon->orientation) {
+                    case FACE_UP:
+                        for (int x = -1; i <= 1; x++) {
+                            if (occupation->occupied[(summon.grid_y - 1) *
+                                                      grid->width +
+                                                      summon.grid_x + x]) {
+                                damage->damage[(summon.grid_y - 1) *
+                                                grid->width +
+                                                summon.grid_x + x] +=
+                                                summon->damage;
+                                summon->cooldown_timer = 0.f;
+                            }
+                        }
+                        break;
+                    case FACE_DOWN:
+                        for (int x = -1; i <= 1; x++) {
+                            if (occupation->occupied[(summon.grid_y + 1) *
+                                                      grid->width +
+                                                      summon.grid_x + x]) {
+                                damage->damage[(summon.grid_y + 1) *
+                                                grid->width +
+                                                summon.grid_x + x] +=
+                                                summon->damage;
+                                summon->cooldown_timer = 0.f;
+                            }
+                        }
+                        break;
+                    case FACE_LEFT:
+                        for (int y = -1; i <= 1; y++)
+                            if (occupation->occupied[(summon.grid_y + y) *
+                                                      grid->width +
+                                                      summon.grid_x - 1]) {
+                                damage->damage[(summon.grid_y + y) *
+                                                grid->width +
+                                                summon.grid_x - 1] +=
+                                                summon->damage;
+                                summon->cooldown_timer = 0.f;
+                            }
+                        }
+                        break;
+                    case FACE_RIGHT:
+                        for (int y = -1; i <= 1; y++)
+                            if (occupation->occupied[(summon.grid_y + y) *
+                                                      grid->width +
+                                                      summon.grid_x + 1]) {
+                                damage->damage[(summon.gird_y + y) *
+                                                grid->width +
+                                                summon.grid_x + 1] +=
+                                                summon->damage;
+                                summon->cooldown_timer = 0.f;
+
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case WHIRL:
+                for (int x = -1; i <= 1; x++) {
+                    for (int y = -1; i <= 1; y++) {
+                        if (x != 0 && y != 0) {
+                            if (occupation->occupied[(summon.grid_y + y) *
+                                                      grid->width +
+                                                      summon.grid_x + x]) {
+                                damage->damage[(summon.grid_y + y) *
+                                                grid->width +
+                                                summon.grid_x + x] +=
+                                                summmon->damage;
+                                summon->cooldown_timer = 0.f;
+                            }
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+}
+void UpdateDamageGrid(const SummonList* summons, const OccupationGrid* occupation,
+                      DamageGrid* damage, Grid* grid,
+                      Vector2 map_size, Vector2 origin_offset) {
+    for (int j = 0; j < damage.height; j++) {
+        for (int i = 0; i < damage.width; i++)
+            damage->damage[j * damage.width + i] = 0;
+    }
+    for (int i = 0; i < summons->last_summon; i++) {
+        AttemptCastAbility(&(summons->summon[i]), grid, occupation, damage);
+    }
 }

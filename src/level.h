@@ -67,9 +67,12 @@ DamageGrid CreateDamageGrid(int width, int height);
 
 void DeleteDamageGrid(DamageGrid* grid);
 
-void UpdateDamageGrid(const SummonList* summons,
-                      const OccupationGrid* occupation,
-                      DamageGrid* damage);
+void AttemptCastAbility(Summon* summon, Grid* grid,
+        OccupationGrid* occupation, DamageGrid* damage);
+
+void UpdateDamageGrid(const SummonList* summons, const OccupationGrid* occupation,
+                      DamageGrid* damage, Grid* grid,
+                      Vector2 map_size, Vector2 origin_offset);
 
 typedef struct {
     EnemyQueue spawn_queue;
