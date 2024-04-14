@@ -52,3 +52,13 @@ Grid LoadGrid(char *filename) {
     UnloadImage(image);
     return grid;
 }
+
+void GetTileFromPosition(int* tile_x, int* tile_y, Grid* grid, Vector2 position,
+                         Vector2 map_size, Vector2 origin_offset) {
+    float tile_width = map_size.x / grid->width;
+    float tile_height = map_size.y / grid->height;
+    float relative_x = position.x - origin_offset.x;
+    float relative_y = position.y - origin_offset.y;
+    *tile_x = (int)floor(relative_x / tile_width);
+    *tile_y = (int)floor(relative_y / tile_height);
+}

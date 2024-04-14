@@ -23,8 +23,7 @@ typedef struct {
 } Summon;
 
 typedef struct {
-    int hitpoints;
-    int mana;
+    int hitpoints, mana;
     int n_summons;
     Summon* summons;
 } Summoner;
@@ -34,7 +33,7 @@ typedef struct {
     int hitpoints;
     int damage;
     int speed;
-    int pos_x,pos_y;
+    Vector2 position;
 } Enemy;
 
 Enemy CreateEnemy(Image* sprite, const int hitpoints, const int damage, const int speed);

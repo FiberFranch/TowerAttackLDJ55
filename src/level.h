@@ -3,6 +3,7 @@
 
 #include "unit.h"
 #include "grid.h"
+#include "raylib.h"
 
 typedef struct {
     Enemy enemy;
@@ -11,8 +12,7 @@ typedef struct {
 
 typedef struct {
     EnemySpawn* enemy_spawns;
-    int capacity;
-    int next_enemy;
+    int capacity, next_enemy;
 } EnemyQueue;
 
 EnemyQueue LoadEnemyQueue(char* filename);
@@ -23,8 +23,7 @@ Enemy* GetNextEnemy(EnemyQueue queue, float time);
 
 typedef struct {
     Enemy* enemies;
-    int capacity;
-    int last_enemy;
+    int capacity, last_enemy;
 } EnemyList;
 
 EnemyList CreateEnemyList(const unsigned int capacity);
@@ -37,8 +36,14 @@ void RemoveEnemyFromEnemyList(EnemyList* list, int index);
 
 typedef struct {
     Summon* summons;
-    int size, capacity;
+    int capacity, last_summon;
 } SummonList;
+
+SummonList CreateSummonList(const unsigned int capacity);
+
+void DeleteSummonList(SummonList* list);
+
+void AddSummonToSummonList(SummonList* list, Summon summon);
 
 typedef struct {
     bool* occupied;
@@ -50,7 +55,8 @@ OccupationGrid CreateOccupationGrid(int width, int height);
 void DeleteOccupationGrid(OccupationGrid* grid);
 
 void UpdateOccupationGrid(const EnemyList* enemies,
-                          OccupationGrid* occupation);
+                          OccupationGrid* occupation, Grid* grid,
+                          Vector2 map_size, Vector2 origin_offset);
 
 typedef struct {
     int* damage;

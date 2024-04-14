@@ -3,6 +3,7 @@
 #include <string.h>
 #include "unit.h"
 #include "level.h"
+#include "grid.h"
 
 EnemyQueue createEnemyQueue(const char* filename) {
     FILE *file = fopen(filename, "r");
@@ -73,4 +74,71 @@ void RemoveEnemyFromEnemyList(EnemyList* list, int index) {
         list->enemies[i] = list->enemies[i+1];
     }
     list->last_enemy--;
+}
+
+SummonList CreateSummonList(const unsigned int capacity) {
+    SummonList list;
+    list.capacity = capacity;
+    list.last_summon = 0;
+    list.summons = (Summon*) calloc(list.capacity, sizeof(Summon));
+    return list;
+}
+
+void DeleteSummonList(SummonList* list) {
+    Summon* ptr = list->summons;
+    free(ptr);
+}
+
+void AddSummonToSummonList(SummonList* list, Summon summon) {
+    list->summons[list->last_summon] = summon;
+    list->last_summon++;
+}
+
+OccupationGrid CreateOccupationGrid(int width, int height) {
+    OccupationGrid grid;
+    grid.width = width;
+    grid.height = height;
+    grid.occupied = (bool*) calloc(grid.width * grid.height, sizeof(bool));
+    for (int j = 0; j < grid.height; j++) {
+        for (int i = 0; i < grid.width; i++)
+            grid.occupied[j * grid.width + i] = false;
+    }
+    return grid;
+}
+
+void DeleteOccupationGrid(OccupationGrid* grid) {
+    bool* ptr = grid->occupied;
+    free(ptr);
+}
+
+void UpdateOccupationGrid(const EnemyList* enemies, OccupationGrid* occupation,
+                         Grid* grid, Vector2 map_size, Vector2 origin_offset) {
+    for (int j = 0; j < occupation.height; j++) {
+        for (int i = 0; i < occupation.width; i++)
+            occupation.occupied[j * width + i] = false;
+    }
+    int tile_x, tile_y;
+    for (int i = 0; i < enemies->last_enemy; i++) {
+        GetTileFromPosition(&tile_x, &tile_y, grid,
+                         enemies->enemies[i].position,
+                         map_size, origin_offset);
+        grid->occupied[tile_y * width + tile_x] = true;
+    }
+}
+
+DamageGrid CreateDamageGrid(int width, int height) {
+    DamageGrid grid;
+    grid.width = width;
+    grid.height = height;
+    grid.damage = (int*) calloc(grid.width * grid.height, sizeof(int));
+    for (int j = 0; j < grid.height; j++) {
+        for (int i = 0; i < grid.width; i++)
+            grid.occupied[j * grid.width + i] = 0;
+    }
+    return grid;
+}
+
+void DeleteDamageGrid(DamageGrid* grid) {
+    int* ptr = grid->damage;
+    free(ptr);
 }
