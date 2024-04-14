@@ -3,18 +3,29 @@
 
 #include "raylib.h"
 
-typedef struct {
-    char* ID;
-    Image* Sprite;
+typedef enum {
+PROJECTILE,
+FLAMES,
 } Ability;
+
+typedef enum {
+FACE_UP,
+FACE_DOWN,
+FACE_LEFT,
+FACE_RIGHT,
+} SummonOrientation;
 
 typedef struct {
     float Cooldown;
+    int grid_x, grid_y;
+    SummonOrientation orientation;
+    Ability ability;
 } Summon;
 
 typedef struct {
     int hitpoints;
     int mana;
+    int n_summons;
     Summon* summons;
 } Summoner;
 

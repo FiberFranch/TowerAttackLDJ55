@@ -53,8 +53,9 @@ Enemy* GetNextEnemy(EnemyQueue queue, float time) {
 EnemyList CreateEnemyList(const unsigned int capacity) {
     EnemyList list;
     list.capacity = capacity;
-    list.size = 0;
+    list.last_enemy = 0;
     list.enemies = (Enemy*) calloc(list.capacity, sizeof(Enemy));
+    return list;
 }
 
 void DeleteEnemyList(EnemyList* list) {
@@ -63,21 +64,13 @@ void DeleteEnemyList(EnemyList* list) {
 }
 
 void AddEnemyToEnemyList(EnemyList* list, Enemy enemy) {
-    list.enemies[list.next_enemy] = enemy;
-    list.next_enemy++;
+    list->enemies[list->last_enemy] = enemy;
+    list->last_enemy++;
 }
 
 void RemoveEnemyFromEnemyList(EnemyList* list, int index) {
-    for (i = index; i < list.next_enemy - 1; i++) {
-        list.enemies[i] = list.enemies[i+1];
+    for (int i = index; i < list->last_enemy - 1; i++) {
+        list->enemies[i] = list->enemies[i+1];
     }
-    list.next_enemy--;
-}
-
-Enemy* GetNextEnemy(EnemyQueue queue, float time) {
-    EnemySpawn* enemy = &queue.enemies[queue.next_enemy];
-    if (enemy->time >= time) {
-        queue.next_enemy++;
-    }
-    return &(enemy->enemy);
+    list->last_enemy--;
 }

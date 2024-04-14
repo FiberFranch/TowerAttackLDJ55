@@ -7,14 +7,16 @@
 * TODO Implementation
 ** DONE Grid
 *** DONE Grid Loader
-** TODO Asset manager
+** DONE Asset manager
 ** TODO Render
-** TODO UI
+*** DONE Map rendering
+*** TODO Units render
+*** TODO UI
 ** TODO Game Logic
 ** TODO Level selection
 
 * TODO Game Mechanics
 ** TODO Summon design
-** TODO Enemy design
+** DONE Enemy design
 ** TODO Level design
 ** TODO Powerups
