@@ -2,11 +2,12 @@
 #define GRID_H_
 
 #include <raylib.h>
-
 typedef enum {
 PATH_TILE,
-OBSTACLE_TILE,
 DEFAULT_TILE,
+START_TILE,
+END_TILE,
+SUMMONER_TILE,
 } TILE_TYPE;
 
 typedef struct {
@@ -30,5 +31,19 @@ Grid LoadGrid(char* filename);
 
 void GetTileFromPosition(int* tile_x, int* tile_y, const Grid* grid,
                          Vector2 position, Vector2 map_size);
+typedef struct {
+    int grid_x, grid_y;
+} PathTile;
+
+typedef struct {
+    PathTile* tiles;
+    int size;
+} Path;
+
+Path CreatePathFromGrid(const Grid* grid);
+
+Vector2 GetWorldPositionFromGrid(const Grid* grid, Vector2 dimensions, int i, int j);
+
+Vector2 GetSummonerWorldPosition(const Grid* grid, Vector2 dimensions);
 
 #endif // GRID_H_

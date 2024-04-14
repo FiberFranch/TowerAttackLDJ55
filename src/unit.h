@@ -27,6 +27,7 @@ typedef struct {
 typedef struct {
     int hitpoints, mana;
     int n_summons;
+    Vector2 position;
     Summon* summons;
 } Summoner;
 

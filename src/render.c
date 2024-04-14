@@ -1,3 +1,4 @@
+#include <math.h>
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,7 +54,10 @@ Model CreateHeightMapFromGrid(const Grid* grid, float dimension) {
         for (unsigned int j = 0; j < grid->height; j++) {
             Color* colors;
             const GridTile* tile = GetTileFromGrid(grid, i, j);
-            if (tile->type == PATH_TILE) {
+            if (tile->type == PATH_TILE ||
+                tile->type == START_TILE ||
+                tile->type == SUMMONER_TILE ||
+                tile->type == END_TILE) {
                 colors = pathColors;
             }
             else {
@@ -79,17 +83,22 @@ Model CreateHeightMapFromGrid(const Grid* grid, float dimension) {
             const unsigned int grid_y = (unsigned int) (((float) j / (float) ImageHeight) * (float)grid->height);
 
             // Compute the height
-            float height = 0.0f;
+            float height = MaxHeight;
             const GridTile* tile0 = GetTileFromGrid(grid, grid_x, grid_y);
-            if (tile0->type != PATH_TILE) {
-                height = MaxHeight;
+            if (tile0->type == PATH_TILE ||
+                tile0->type == START_TILE ||
+                tile0->type == END_TILE) {
+                height = 0.0f;
+            }
+            if (tile0->type == SUMMONER_TILE) {
+                height = 2*MaxHeight;
             }
 
             ((char*)heightmapImage.data)[i + ImageWidth * j] = (char) height;
         }
     }
 
-    Mesh heightmap_mesh = GenMeshHeightmap(heightmapImage, (Vector3){dimension, dimension, dimension});
+    Mesh heightmap_mesh = GenMeshHeightmap(heightmapImage, (Vector3){dimension, 10.0, dimension});
     Model heightmap_model = LoadModelFromMesh(heightmap_mesh);
     heightmap_model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTextureFromImage(mapDiffuseImage);
     heightmap_model.materials[0].maps[MATERIAL_MAP_NORMAL].texture = LoadTextureFromImage(mapTilesImage);
@@ -150,11 +159,30 @@ GridLookup LoadGridLookup(Camera camera, Model levelHeightMap, Vector3 position)
     return lookup;
 }
 
+static int lastScreenWidth, lastScreenHeight;
+void UpdateGridLookupIfResolutionChanges(GridLookup *lookup, Camera camera, Model levelHeightMap, Vector3 position) {
+    int currentWidth = GetScreenWidth();
+    int currentHeight = GetScreenHeight();
+    if (currentHeight != lastScreenHeight || currentWidth != lastScreenWidth) {
+        printf("lastWidth = %i, currentWidth = %i \n", lastScreenHeight, currentWidth);
+        lastScreenHeight = currentHeight;
+        lastScreenWidth = currentWidth;
+        UnloadGridLookup(*lookup);
+        *lookup = LoadGridLookup(camera, levelHeightMap, position);
+    }
+}
+
 int GetGridIndexFromScreen(GridLookup lookup) {
     Vector2 pos = GetMousePosition();
     int index = ((int)pos.x) + lookup.width * ((int)pos.y);
     /* printf("index = %i\n", lookup.data[index]); */
     return lookup.data[index];
+}
+
+void DrawSummoner(float map_size, Vector2 position) {
+    Model summoner = *GetModelById(MODEL_ID_rectangle);
+    summoner.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *GetTextureById(SPRITE_ID_summoner);
+    DrawModel(summoner, (Vector3){position.x, 0.05 * (sin(GetTime()) + 2.0), position.y}, 2.0f/map_size, WHITE);
 }
 
 void DrawLevel() {
@@ -163,6 +191,7 @@ void DrawLevel() {
     const float map_size = 5.0f;
     const Vector3 offset = (Vector3){-0.5f *map_size, 0.0, -0.5f *map_size};
     Grid grid = LoadGrid("assets/map_test.png");
+    Vector2 summonerPos = GetSummonerWorldPosition(&grid, (Vector2){map_size, map_size});
     Model heightmap_model = CreateHeightMapFromGrid(&grid, map_size);
 
     int SelectedTileLoc = GetShaderLocation(*GetShaderById(SHADER_ID_map), "selectedTile");
@@ -173,6 +202,7 @@ void DrawLevel() {
 
     while (!WindowShouldClose())
     {
+        UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
         selectedTile = GetGridIndexFromScreen(lookup);
         if (selectedTile < grid.width * grid.height) {
             if (grid.grid[selectedTile].type == DEFAULT_TILE)
@@ -181,13 +211,16 @@ void DrawLevel() {
         }
         SetShaderValue(*GetShaderById(SHADER_ID_map), SelectedTileLoc, &selectedTile, SHADER_UNIFORM_INT);
         SetShaderValue(*GetShaderById(SHADER_ID_map), IsPlacableLoc, &isPlacable, SHADER_UNIFORM_INT);
+
         BeginDrawing();
         ClearBackground(DARKGRAY);
         /* UpdateCamera(&camera, CAMERA_FREE); */
         BeginMode3D(camera);
         DrawModel(heightmap_model, offset, 1.0, WHITE);
+        DrawSummoner(map_size, summonerPos);
         EndMode3D();
 
+        DrawFPS(50,50);
         EndDrawing();
     }
 

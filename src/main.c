@@ -9,6 +9,7 @@ void InitializeGame() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(initialScreenWidth, initialScreenHeight, "Test");
     /* SetWindowState(FLAG_WINDOW_RESIZABLE | FLAG_WINDOW_MAXIMIZED); */
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
     InitAudioDevice();
 
     LoadAllAssets();

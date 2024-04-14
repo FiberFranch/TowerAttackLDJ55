@@ -7,6 +7,7 @@
 // Sprites should be png images placed inside the assets/ directory
 #define LIST_OF_SPRITES \
     SPRITE(path) \
+    SPRITE(summoner) \
     SPRITE(default) \
     SPRITE(plant) \
     SPRITE(map_test) \
