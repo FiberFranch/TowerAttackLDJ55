@@ -26,7 +26,7 @@ GridTile* GetTileFromGrid(const Grid* grid, unsigned int i, unsigned int j) {
     return &grid->grid[i + j * grid->width];
 }
 
-Grid LoadGrid(char *filename) {
+Grid LoadGrid(const char *filename) {
     Image image = LoadImage(filename);
     Color *pixels = LoadImageColors(image);
     unsigned int width = image.width;

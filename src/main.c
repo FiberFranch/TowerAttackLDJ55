@@ -28,7 +28,9 @@ int main(void)
 {
     InitializeGame();
 
-    DrawLevel();
+    Summoner summoner;
+    Level level = LoadLevel(summoner, "assets/map_test.png", "assets/test_queue.txt");
+    DrawLevel(level);
 
     DeinitializeGame();
 

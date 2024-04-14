@@ -1,14 +1,10 @@
-#include <math.h>
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "asset_loader.h"
 #include "grid.h"
-
-// typedef struct LevelState LevelState;
-// typedef struct Level Level;
-
-// void DrawLevel(const Level* level, const LevelState* state) {
+#include "level.h"
+#include "unit.h"
 
 Camera CreateCamera() {
     Camera3D camera = { 0 };
@@ -179,18 +175,17 @@ int GetGridIndexFromScreen(GridLookup lookup) {
     return lookup.data[index];
 }
 
-void DrawSummoner(float map_size, Vector2 position) {
-    Model summoner = *GetModelById(MODEL_ID_rectangle);
-    summoner.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *GetTextureById(SPRITE_ID_summoner);
-    DrawModel(summoner, (Vector3){position.x, 0.05 * (sin(GetTime()) + 2.0), position.y}, 2.0f/map_size, WHITE);
-}
-
-void DrawLevel() {
+void DrawLevel(Level level ) {
     Camera camera = CreateCamera();
 
     const float map_size = 5.0f;
     const Vector3 offset = (Vector3){-0.5f *map_size, 0.0, -0.5f *map_size};
-    Grid grid = LoadGrid("assets/map_test.png");
+    Grid grid = level.grid;
+    const float scalex = ((float)grid.width) / map_size;
+
+    EnemyQueue queue = level.spawn_queue;
+    EnemyList enemy_list = CreateEnemyList(queue.capacity);
+    Path path = CreatePathFromGrid(&grid);
     Vector2 summonerPos = GetSummonerWorldPosition(&grid, (Vector2){map_size, map_size});
     Model heightmap_model = CreateHeightMapFromGrid(&grid, map_size);
 
@@ -200,8 +195,16 @@ void DrawLevel() {
     int isPlacable = 0;
     GridLookup lookup = LoadGridLookup(camera, heightmap_model, offset);
 
+    float time = 0.0f;
     while (!WindowShouldClose())
     {
+        time += 1.0f / 60.0f;
+        printf("time = %f\n", time);
+        Enemy* enemy = GetNextEnemy(&queue, time);
+        if (enemy) {
+            AddEnemyToEnemyList(&enemy_list, *enemy);
+        }
+
         UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
         selectedTile = GetGridIndexFromScreen(lookup);
         if (selectedTile < grid.width * grid.height) {
@@ -217,13 +220,20 @@ void DrawLevel() {
         /* UpdateCamera(&camera, CAMERA_FREE); */
         BeginMode3D(camera);
         DrawModel(heightmap_model, offset, 1.0, WHITE);
-        DrawSummoner(map_size, summonerPos);
+        DrawSummoner(scalex, summonerPos);
+
+        for (int i = 0; i < enemy_list.last_enemy; i++ ) {
+            DrawEnemy(&enemy_list.enemies[i], 0.5f * scalex);
+        }
+
         EndMode3D();
 
         DrawFPS(50,50);
         EndDrawing();
     }
 
+    DeleteEnemyList(&enemy_list);
+    DeleteEnemyQueue(&queue);
     UnloadGridLookup(lookup);
     UnloadModel(heightmap_model);
 }

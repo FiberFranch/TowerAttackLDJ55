@@ -5,7 +5,7 @@
 #include "level.h"
 #include "grid.h"
 
-EnemyQueue createEnemyQueue(const char* filename) {
+EnemyQueue LoadEnemyQueue(const char* filename) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         perror("Error opening enemy list\n");
@@ -19,16 +19,18 @@ EnemyQueue createEnemyQueue(const char* filename) {
             capacity++;
         }
     }
+    fclose(file);
 
+    file = fopen(filename, "r");
     EnemyQueue queue;
     queue.capacity = capacity;
     queue.next_enemy = 0;
     queue.enemy_spawns = (EnemySpawn*) calloc(queue.capacity, sizeof(EnemySpawn));
 
     char enemy[100];
-    int time;
+    float time;
     int i = 0;
-    while (fscanf(file, "%s %d", enemy, &time) == 2) {
+    while (fscanf(file, "%s %f", enemy, &time) == 2) {
         queue.enemy_spawns[i].enemy = GetEnemyById(enemy);
         queue.enemy_spawns[i].time = time;
         i++;
@@ -43,12 +45,15 @@ void DeleteEnemyQueue(EnemyQueue* queue) {
     free(ptr);
 }
 
-Enemy* GetNextEnemy(EnemyQueue queue, float time) {
-    EnemySpawn* enemy_spawn = &queue.enemy_spawns[queue.next_enemy];
-    if (enemy_spawn->time >= time) {
-        queue.next_enemy++;
+Enemy* GetNextEnemy(EnemyQueue* queue, float time) {
+    if (queue->next_enemy >= queue->capacity) return NULL; // Avoid memory issues when running out of enemies
+    EnemySpawn* enemy_spawn = &queue->enemy_spawns[queue->next_enemy];
+    /* printf("spawn time = %f\n", enemy_spawn->time); */
+    if (enemy_spawn->time <= time) {
+        queue->next_enemy++;
+        return &(enemy_spawn->enemy);
     }
-    return &(enemy_spawn->enemy);
+    return NULL;
 }
 
 EnemyList CreateEnemyList(const unsigned int capacity) {
@@ -225,4 +230,12 @@ void UpdateDamageGrid(SummonList* summons, const OccupationGrid* occupation,
     for (int i = 0; i < summons->last_summon; i++) {
         AttemptCastAbility(&(summons->summons[i]), grid, occupation, damage);
     }
+}
+
+Level LoadLevel(Summoner summoner, const char* grid_file, const char* enemies_file) {
+    Level level;
+    level.summoner = summoner;
+    level.spawn_queue = LoadEnemyQueue(enemies_file);
+    level.grid = LoadGrid(grid_file);
+    return level;
 }

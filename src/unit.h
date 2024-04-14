@@ -32,15 +32,19 @@ typedef struct {
 } Summoner;
 
 typedef struct { 
-    Image* sprite;
+    Texture2D* sprite;
     int hitpoints;
     int damage;
     int speed;
     Vector2 position;
 } Enemy;
 
-Enemy CreateEnemy(Image* sprite, const int hitpoints, const int damage, const int speed);
+Enemy CreateEnemy(Texture2D* sprite, const int hitpoints, const int damage, const int speed);
 
 Enemy GetEnemyById(const char* name);
+
+void DrawEnemy(const Enemy* enemy, float scale);
+
+void DrawSummoner(float scale, Vector2 position);
 
 #endif // UNIT_H_

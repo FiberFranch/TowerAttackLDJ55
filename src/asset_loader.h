@@ -8,6 +8,7 @@
 #define LIST_OF_SPRITES \
     SPRITE(path) \
     SPRITE(summoner) \
+    SPRITE(bishop) \
     SPRITE(default) \
     SPRITE(plant) \
     SPRITE(map_test) \

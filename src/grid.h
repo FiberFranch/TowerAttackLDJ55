@@ -27,7 +27,7 @@ void SetGridTile(const Grid* grid, unsigned int i, unsigned int j, GridTile tile
 
 GridTile* GetTileFromGrid(const Grid* grid, unsigned int i, unsigned int j);
 
-Grid LoadGrid(char* filename);
+Grid LoadGrid(const char* filename);
 
 void GetTileFromPosition(int* tile_x, int* tile_y, const Grid* grid,
                          Vector2 position, Vector2 map_size);

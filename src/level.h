@@ -7,7 +7,7 @@
 
 typedef struct {
     Enemy enemy;
-    int time;
+    float time;
 } EnemySpawn;
 
 typedef struct {
@@ -15,11 +15,11 @@ typedef struct {
     int capacity, next_enemy;
 } EnemyQueue;
 
-EnemyQueue LoadEnemyQueue(char* filename);
+EnemyQueue LoadEnemyQueue(const char* filename);
 
 void DeleteEnemyQueue(EnemyQueue* queue);
 
-Enemy* GetNextEnemy(EnemyQueue queue, float time);
+Enemy* GetNextEnemy(EnemyQueue* queue, float time);
 
 typedef struct {
     Enemy* enemies;
@@ -82,5 +82,7 @@ typedef struct {
     Grid grid;
     Summoner summoner;
 } Level;
+
+Level LoadLevel(Summoner summoner, const char* grid_file, const char* enemies_file);
 
 #endif // LEVEL_H_
