@@ -41,9 +41,14 @@ Grid LoadGrid(char *filename) {
             if (pixel.b == 100) {
                 tile.type = PATH_TILE;
             }
-
             if (pixel.b == 200) {
-                tile.type = OBSTACLE_TILE;
+                tile.type = START_TILE;
+            }
+            if (pixel.b == 255) {
+                tile.type = END_TILE;
+            }
+            if (pixel.r == 255) {
+                tile.type = SUMMONER_TILE;
             }
             SetGridTile(&grid, i, j, tile);
         }
