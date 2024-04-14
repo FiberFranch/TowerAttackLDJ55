@@ -24,48 +24,49 @@ Enemy* GetNextEnemy(EnemyQueue queue, float time);
 typedef struct {
     Enemy* enemies;
     int capacity;
-    int next_enemy;
+    int last_enemy;
 } EnemyList;
 
 EnemyList CreateEnemyList(const unsigned int capacity);
 
-void DeleteEnemyList();
+void DeleteEnemyList(EnemyList* list);
 
 void AddEnemyToEnemyList(EnemyList* list, Enemy enemy);
 
 void RemoveEnemyFromEnemyList(EnemyList* list, int index);
 
 typedef struct {
-    Grid grid;
-    Summoner summoner;
+    Summon* summons;
+    int size, capacity;
+} SummonList;
+
+typedef struct {
+    bool* occupied;
+    int width, height;
+} OccupationGrid;
+
+OccupationGrid CreateOccupationGrid(int width, int height);
+
+void DeleteOccupationGrid(OccupationGrid* grid);
+
+void UpdateOccupationGrid(const EnemyList* enemies,
+                          OccupationGrid* occupation);
+
+typedef struct {
+    int* damage;
+    int width, height;
+} DamageGrid;
+
+DamageGrid CreateDamageGrid(int width, int height);
+
+void DeleteDamageGrid(DamageGrid* grid);
+
+void UpdateDamageGrid(const SummonList* summons,
+                      const OccupationGrid* occupation,
+                      DamageGrid* damage);
+
+typedef struct {
     EnemyQueue spawn_queue;
-    EnemyList current_enemies;
-} Level;
-
-void DeleteEnemyQueue();
-
-Enemy* GetNextEnemy(EnemyQueue queue, float time);
-
-typedef struct {
-} Summoner;
-
-typedef struct {
-    Enemy* enemies;
-    int capacity;
-    int size;
-} EnemyList;
-
-EnemyList CreateEnemyList(const unsigned int capacity);
-
-void DeleteEnemyList();
-
-void AddEnemyToEnemyList(EnemyList* list, Enemy enemy);
-
-void DeleteEnemyFromEnemyList(EnemyList* list, int index);
-
-typedef struct {
-    EnemyQueue spawn_queue;
-    EnemyList current_enemies;
     Grid grid;
     Summoner summoner;
 } Level;
