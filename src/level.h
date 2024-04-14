@@ -1,9 +1,9 @@
 #ifndef LEVEL_H_
 #define LEVEL_H_
 
+#include <raylib.h>
 #include "unit.h"
 #include "grid.h"
-#include "raylib.h"
 
 typedef struct {
     Enemy enemy;
@@ -55,7 +55,7 @@ OccupationGrid CreateOccupationGrid(int width, int height);
 void DeleteOccupationGrid(OccupationGrid* grid);
 
 void UpdateOccupationGrid(const EnemyList* enemies,
-                          OccupationGrid* occupation, Grid* grid,
+                          OccupationGrid* occupation, const Grid* grid,
                           Vector2 map_size, Vector2 origin_offset);
 
 typedef struct {
@@ -67,11 +67,14 @@ DamageGrid CreateDamageGrid(int width, int height);
 
 void DeleteDamageGrid(DamageGrid* grid);
 
-void AttemptCastAbility(Summon* summon, Grid* grid,
+void AttemptDealDamage(Summon* summon, const Grid* grid, DamageGrid* damage,
+        const OccupationGrid* occupation, int i, int j);
+
+void AttemptCastAbility(Summon* summon, const Grid* grid,
                         const OccupationGrid* occupation, DamageGrid* damage);
 
-void UpdateDamageGrid(const SummonList* summons, const OccupationGrid* occupation,
-                      DamageGrid* damage, Grid* grid,
+void UpdateDamageGrid(SummonList* summons, const OccupationGrid* occupation,
+                      DamageGrid* damage, const Grid* grid,
                       Vector2 map_size, Vector2 origin_offset);
 
 typedef struct {

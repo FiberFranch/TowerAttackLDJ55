@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <raylib.h>
+#include <math.h>
 #include "grid.h"
 
 Grid CreateGrid(unsigned int width, unsigned int height) {
@@ -53,8 +54,9 @@ Grid LoadGrid(char *filename) {
     return grid;
 }
 
-void GetTileFromPosition(int* tile_x, int* tile_y, Grid* grid, Vector2 position,
-                         Vector2 map_size, Vector2 origin_offset) {
+void GetTileFromPosition(int* tile_x, int* tile_y, const Grid* grid,
+                         Vector2 position, Vector2 map_size,
+                         Vector2 origin_offset) {
     float tile_width = map_size.x / grid->width;
     float tile_height = map_size.y / grid->height;
     float relative_x = position.x - origin_offset.x;
