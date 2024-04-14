@@ -44,6 +44,6 @@ Path CreatePathFromGrid(const Grid* grid);
 
 Vector2 GetWorldPositionFromGrid(const Grid* grid, Vector2 dimensions, int i, int j);
 
-Vector2 GetSummonerWorldPosition(const Grid* grid, Vector2 dimensions);
+Vector2 GetTileTypeWorldPosition(const Grid* grid, Vector2 dimensions, TILE_TYPE type);
 
 #endif // GRID_H_

@@ -1,0 +1,2 @@
+bishop 2
+bishop 4

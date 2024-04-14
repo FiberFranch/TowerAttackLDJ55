@@ -19,6 +19,8 @@ EnemyQueue LoadEnemyQueue(const char* filename);
 
 void DeleteEnemyQueue(EnemyQueue* queue);
 
+void EnemyQueueSetStartingPosition(EnemyQueue* queue, Vector2 position);
+
 Enemy* GetNextEnemy(EnemyQueue* queue, float time);
 
 typedef struct {
@@ -76,6 +78,8 @@ bool AttemptCastAbility(Summon* summon, const Grid* grid,
 void UpdateDamageGrid(SummonList* summons, const OccupationGrid* occupation,
                       DamageGrid* damage, const Grid* grid,
                       Vector2 map_size);
+
+void ApplyDamageToEnemies(const DamageGrid* damage_grid, const Grid* grid, Vector2 dimensions, EnemyList* enemy_list);
 
 typedef struct {
     EnemyQueue spawn_queue;
