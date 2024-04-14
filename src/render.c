@@ -150,6 +150,19 @@ GridLookup LoadGridLookup(Camera camera, Model levelHeightMap, Vector3 position)
     return lookup;
 }
 
+static int lastScreenWidth, lastScreenHeight;
+void UpdateGridLookupIfResolutionChanges(GridLookup *lookup, Camera camera, Model levelHeightMap, Vector3 position) {
+    int currentWidth = GetScreenWidth();
+    int currentHeight = GetScreenHeight();
+    if (currentHeight != lastScreenHeight || currentWidth != lastScreenWidth) {
+        printf("lastWidth = %i, currentWidth = %i \n", lastScreenHeight, currentWidth);
+        lastScreenHeight = currentHeight;
+        lastScreenWidth = currentWidth;
+        UnloadGridLookup(*lookup);
+        *lookup = LoadGridLookup(camera, levelHeightMap, position);
+    }
+}
+
 int GetGridIndexFromScreen(GridLookup lookup) {
     Vector2 pos = GetMousePosition();
     int index = ((int)pos.x) + lookup.width * ((int)pos.y);
@@ -173,6 +186,7 @@ void DrawLevel() {
 
     while (!WindowShouldClose())
     {
+        UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
         selectedTile = GetGridIndexFromScreen(lookup);
         if (selectedTile < grid.width * grid.height) {
             if (grid.grid[selectedTile].type == DEFAULT_TILE)
@@ -188,6 +202,7 @@ void DrawLevel() {
         DrawModel(heightmap_model, offset, 1.0, WHITE);
         EndMode3D();
 
+        DrawFPS(50,50);
         EndDrawing();
     }
 

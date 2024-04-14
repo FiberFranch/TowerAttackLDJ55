@@ -52,3 +52,58 @@ Grid LoadGrid(char *filename) {
     UnloadImage(image);
     return grid;
 }
+
+Path CreatePathFromGrid(const Grid* grid) {
+    // Look for start and end
+    int start_i, start_j, end_i, end_j;
+    for (unsigned int i=0; i < grid->width; i++) {
+        for (unsigned int j=0; j < grid->height; j++) {
+            if (GetTileFromGrid(grid, i, j)->type == START_TILE) {
+                start_i = i;
+                start_j = j;
+            }
+            else if (GetTileFromGrid(grid, i, j)->type == END_TILE) {
+                end_i = i;
+                end_j = j;
+            }
+        }
+    }
+    Path path = {0};
+    path.tiles = calloc(200, sizeof(PathTile));
+    int pathLength = 0;
+    int current_i = start_i;
+    int current_j = start_j;
+    while (current_i != end_i && current_j != end_j) {
+        int iteration_i = current_i;
+        int iteration_j = current_j;
+        PathTile tile;
+        tile.grid_x = current_i;
+        tile.grid_y = current_j;
+        path.tiles[pathLength] = tile;
+        pathLength++;
+
+        // Look at neighbours
+        for (int x=-1; x <= 1; x++) {
+            for (int y=-1; y <= 1; y++) {
+                if (abs(x) == abs(y)) continue;
+                // Check bounds
+                if (current_i + x < 0 || current_i + x >= grid->width ||
+                    current_j + y < 0 || current_j + y >= grid->height) continue;
+
+                // Avoid last path tile
+                if (tile.grid_x == current_i + x && tile.grid_y == current_j + y) continue;
+
+                if (GetTileFromGrid(grid, current_i, current_j)->type == PATH_TILE ||
+                    GetTileFromGrid(grid, current_i, current_j)->type == END_TILE) {
+                    current_i += x;
+                    current_j += y;
+                }
+            }
+        }
+        if (iteration_i == current_i && iteration_j == current_j) {
+            printf("ERROR::CreatePathFromGrid: The path does not connect with the end Tile\n");
+            break;
+        }
+    }
+    return path;
+}
