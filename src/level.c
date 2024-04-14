@@ -239,3 +239,41 @@ Level LoadLevel(Summoner summoner, const char* grid_file, const char* enemies_fi
     level.grid = LoadGrid(grid_file);
     return level;
 }
+
+int GetNextTileIndex(int tile_x, int tile_y, const Path* path) {
+    for (int i = 0; i < path->size; i++) {
+        if (path->tiles[i].grid_x == tile_x && path->tiles[i].grid_y == tile_y) {
+            return i + 1;
+        }
+    }
+}
+
+void CalculateMoveDirection(int tile_x, int tile_y, const PathTile* next_tile,
+                            int* dir_x, int* dir_y) {
+    if (tile_x == next_tile->grid_x) {
+        *dir_y = 0;
+        if (tile_x < next_tile.grid_x)
+            *dir_x = 1;
+        else 
+            *dir_x = -1;
+    } else {
+        *dir_x = 0;
+        if (tile_y < next_tile.grid_y)
+            *dir_y = 1;
+        else 
+            *dir_y = -1;
+    }
+}
+
+void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
+                          const Path* path, float tile_width) {
+    int tile_x, tile_y, index;
+    PathTile next_tile
+    for (int i = 0; i < enemies.last_summon; i++) {
+        void GetTileFromPosition(&tile_x, &tile_y, grid,
+                                 position, map_size);
+        index = GetNextTileIndex(tile_x, tile_y, path);
+        
+    }
+
+}

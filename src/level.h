@@ -85,4 +85,9 @@ typedef struct {
 
 Level LoadLevel(Summoner summoner, const char* grid_file, const char* enemies_file);
 
+int GetNextTile(int tile_x, int tile_y, const Path* path);
+
+void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
+                          const Path* path, float tile_width);
+
 #endif // LEVEL_H_
