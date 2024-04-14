@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <raylib.h>
 #include "grid.h"
+#include "raymath.h"
 
 Grid CreateGrid(unsigned int width, unsigned int height) {
     Grid grid;
@@ -111,4 +112,23 @@ Path CreatePathFromGrid(const Grid* grid) {
         }
     }
     return path;
+}
+
+Vector2 GetWorldPositionFromGrid(const Grid* grid, Vector2 dimensions, int i, int j) {
+    float scalex = dimensions.x / grid->width;
+    float scaley = dimensions.y / grid->height;
+    Vector2 position = { scalex * (i + 0.5f), scaley * (j + 0.5f)};
+    Vector2 offset = (Vector2){0.5f*dimensions.x, 0.5f*dimensions.y};
+    return Vector2Subtract(position, offset);
+}
+
+Vector2 GetSummonerWorldPosition(const Grid* grid, Vector2 dimensions) {
+    for (unsigned int i = 0; i < grid->width; i++) {
+        for (unsigned int j = 0; j < grid->height; j++) {
+            if (GetTileFromGrid(grid, i, j)->type == SUMMONER_TILE) {
+                return GetWorldPositionFromGrid(grid, dimensions, i, j);
+            }
+        }
+    }
+    return (Vector2){0};
 }

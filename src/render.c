@@ -98,7 +98,7 @@ Model CreateHeightMapFromGrid(const Grid* grid, float dimension) {
         }
     }
 
-    Mesh heightmap_mesh = GenMeshHeightmap(heightmapImage, (Vector3){dimension, dimension, dimension});
+    Mesh heightmap_mesh = GenMeshHeightmap(heightmapImage, (Vector3){dimension, 10.0, dimension});
     Model heightmap_model = LoadModelFromMesh(heightmap_mesh);
     heightmap_model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = LoadTextureFromImage(mapDiffuseImage);
     heightmap_model.materials[0].maps[MATERIAL_MAP_NORMAL].texture = LoadTextureFromImage(mapTilesImage);
@@ -179,11 +179,10 @@ int GetGridIndexFromScreen(GridLookup lookup) {
     return lookup.data[index];
 }
 
-void DrawSummoner(float map_size, float scaley, Vector2 position) {
+void DrawSummoner(float map_size, Vector2 position) {
     Model summoner = *GetModelById(MODEL_ID_rectangle);
     summoner.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *GetTextureById(SPRITE_ID_summoner);
-    /* DrawModel(summoner, (Vector3){position.x, 0.1 * (sin(GetTime()) + 2.0), position.y}, 2.0f/map_size, WHITE); */
-    DrawModel(summoner, (Vector3){position.x, 0.05 * (sin(GetTime()) + 2.0), position.y - 0.5*scaley}, 2.0f/map_size, WHITE);
+    DrawModel(summoner, (Vector3){position.x, 0.05 * (sin(GetTime()) + 2.0), position.y}, 2.0f/map_size, WHITE);
 }
 
 void DrawLevel() {
@@ -192,6 +191,7 @@ void DrawLevel() {
     const float map_size = 5.0f;
     const Vector3 offset = (Vector3){-0.5f *map_size, 0.0, -0.5f *map_size};
     Grid grid = LoadGrid("assets/map_test.png");
+    Vector2 summonerPos = GetSummonerWorldPosition(&grid, (Vector2){map_size, map_size});
     Model heightmap_model = CreateHeightMapFromGrid(&grid, map_size);
 
     int SelectedTileLoc = GetShaderLocation(*GetShaderById(SHADER_ID_map), "selectedTile");
@@ -217,10 +217,7 @@ void DrawLevel() {
         /* UpdateCamera(&camera, CAMERA_FREE); */
         BeginMode3D(camera);
         DrawModel(heightmap_model, offset, 1.0, WHITE);
-        float scalex = map_size / grid.width;
-        float scaley = map_size / grid.height;
-        DrawSummoner(map_size, scaley, (Vector2){0.0,0.0});
-        DrawSummoner(map_size, scalex, (Vector2){9.0*scalex,-1.0*scaley});
+        DrawSummoner(map_size, summonerPos);
         EndMode3D();
 
         DrawFPS(50,50);

@@ -1,6 +1,7 @@
 #ifndef GRID_H_
 #define GRID_H_
 
+#include "raylib.h"
 typedef enum {
 PATH_TILE,
 DEFAULT_TILE,
@@ -38,5 +39,9 @@ typedef struct {
 } Path;
 
 Path CreatePathFromGrid(const Grid* grid);
+
+Vector2 GetWorldPositionFromGrid(const Grid* grid, Vector2 dimensions, int i, int j);
+
+Vector2 GetSummonerWorldPosition(const Grid* grid, Vector2 dimensions);
 
 #endif // GRID_H_
