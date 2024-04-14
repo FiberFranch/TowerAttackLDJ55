@@ -246,34 +246,38 @@ int GetNextTileIndex(int tile_x, int tile_y, const Path* path) {
             return i + 1;
         }
     }
+    return -1;
 }
 
-void CalculateMoveDirection(int tile_x, int tile_y, const PathTile* next_tile,
-                            int* dir_x, int* dir_y) {
-    if (tile_x == next_tile->grid_x) {
-        *dir_y = 0;
-        if (tile_x < next_tile.grid_x)
-            *dir_x = 1;
-        else 
-            *dir_x = -1;
+void ComputeDirection(int* dir_x, int* dir_y, const Path* path, int index) {
+    int dir_prev_x = path->tiles[index - 1].grid_x -
+                     path->tiles[index - 2].grid_x;
+    int dir_prev_y = path->tiles[index - 1].grid_y -
+                     path->tiles[index - 2].grid_y;
+    if (dir_prev_x < 0 || dir_prev_y > 0) {
+        *dir_x = dir_prev_x;
+        *dir_y = dir_prev_y;
     } else {
-        *dir_x = 0;
-        if (tile_y < next_tile.grid_y)
-            *dir_y = 1;
-        else 
-            *dir_y = -1;
+        *dir_x = path->tiles[index].grid_x -
+                 path->tiles[index - 1].grid_x;
+        *dir_y = path->tiles[index].grid_y -
+                 path->tiles[index - 1].grid_y;
     }
 }
 
 void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
-                          const Path* path, float tile_width) {
-    int tile_x, tile_y, index;
-    PathTile next_tile
-    for (int i = 0; i < enemies.last_summon; i++) {
-        void GetTileFromPosition(&tile_x, &tile_y, grid,
-                                 position, map_size);
+                          const Path* path, float tile_width, Vector2 map_size) {
+    int tile_x, tile_y, index, dir_x, dir_y;
+    PathTile next_tile;
+    for (int i = 0; i < enemies->last_enemy; i++) {
+        GetTileFromPosition(&tile_x, &tile_y, grid,
+                            enemies->enemies[i].position, map_size);
         index = GetNextTileIndex(tile_x, tile_y, path);
-        
+        if (index == 0) {
+            dir_x = path->tiles[1].grid_x - tile_x;
+            dir_y = path->tiles[1].grid_y - tile_y;
+        } else {
+            ComputeDirection(&dir_x, &dir_y, path, index);
+        }
     }
-
 }
