@@ -1,0 +1,20 @@
+* TODO Pixel Art
+** TODO Summoner
+** TODO Lil monsters
+** TODO Towers
+** TODO Animations
+
+* TODO Implementation
+** DONE Grid
+*** DONE Grid Loader
+** TODO Asset manager
+** TODO Render
+** TODO UI
+** TODO Game Logic
+** TODO Level selection
+
+* TODO Game Mechanics
+** TODO Summon design
+** TODO Enemy design
+** TODO Level design
+** TODO Powerups

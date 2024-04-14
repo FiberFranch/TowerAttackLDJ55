@@ -74,3 +74,10 @@ void RemoveEnemyFromEnemyList(EnemyList* list, int index) {
     list.next_enemy--;
 }
 
+Enemy* GetNextEnemy(EnemyQueue queue, float time) {
+    EnemySpawn* enemy = &queue.enemies[queue.next_enemy];
+    if (enemy->time >= time) {
+        queue.next_enemy++;
+    }
+    return &(enemy->enemy);
+}
