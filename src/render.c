@@ -397,16 +397,26 @@ void DrawLevel(Level level) {
 
         switch(selected_summon_orientation) {
             case FACE_DOWN:
-                highlightedTile[1] = highlightedTile[0] + grid.width;
+                if (highlightedTile[0] > grid.width)
+                    highlightedTile[1] = highlightedTile[0] + grid.width;
+                else
+                    highlightedTile[1] = 10000000;
                 break;
             case FACE_LEFT:
-                highlightedTile[1] = highlightedTile[0] - 1;
+                if (highlightedTile[0] % grid.width!= 0)
+                    highlightedTile[1] = highlightedTile[0] - 1;
+                else 
+                    highlightedTile[1] = 10000000;
                 break;
             case FACE_UP:
-                highlightedTile[1] = highlightedTile[0] - grid.width;
+                if (highlightedTile[0] < grid.width * (grid.height - 1))
+                    highlightedTile[1] = highlightedTile[0] - grid.width;
                 break;
             case FACE_RIGHT:
-                highlightedTile[1] = highlightedTile[0] + 1;
+                if (highlightedTile[0] % grid.width != grid.width - 1)
+                    highlightedTile[1] = highlightedTile[0] + 1;
+                else
+                    highlightedTile[1] = 10000000;
                 break;
             }
 
