@@ -113,6 +113,20 @@ Path CreatePathFromGrid(const Grid* grid) {
                 if (abs(x) == abs(y)) continue;
                 printf ("x y: %d %d\n", x, y);
 
+                switch (GetTileFromGrid(grid, current_i + x, current_j + y)->type) {
+                    case PATH_TILE:
+                        printf("tile type: PATH_TILE\n");
+                        break;
+                    case START_TILE:
+                        printf("tile type: START_TILE\n");
+                        break;
+                    case END_TILE:
+                        printf("tile type: END_TILE\n");
+                        break;
+                    case DEFAULT_TILE:
+                        printf("tile type: DEFAULT_TILE\n");
+                        break;
+                }
                 if (GetTileFromGrid(grid, current_i + x, current_j + y)->type == PATH_TILE ||
                     GetTileFromGrid(grid, current_i + x, current_j + y)->type == END_TILE) {
                     printf("current coordinates: %d %d\n", path.tiles[pathLength - 1].grid_x, path.tiles[pathLength - 1].grid_y);
