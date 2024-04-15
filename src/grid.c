@@ -148,6 +148,7 @@ Path CreatePathFromGrid(const Grid* grid) {
                     current_i += x;
                     current_j += y;
                     next_tile_found = true;
+                    printf("Correct\n");
                     break;
                 }
             }
