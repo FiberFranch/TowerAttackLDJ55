@@ -6,6 +6,15 @@
 #include "level.h"
 #include "unit.h"
 
+int CompareEnemyDepth(const void* a, const void* b) {
+    const Enemy* enemyA = (Enemy*) a;
+    const Enemy* enemyB = (Enemy*) b;
+
+    if (enemyA->position.y < enemyB->position.y) return -1;
+    if (enemyA->position.y > enemyB->position.y) return 1;
+    else return 0;
+}
+
 Camera CreateCamera() {
     Camera3D camera = { 0 };
     camera.position = (Vector3){ 0.0f, 2.0f, 5.0f }; // Camera position
@@ -175,7 +184,7 @@ int GetGridIndexFromScreen(GridLookup lookup) {
     return lookup.data[index];
 }
 
-void DrawLevel(Level level ) {
+void DrawLevel(Level level) {
     Camera camera = CreateCamera();
 
     const float map_size = 5.0f;
@@ -185,8 +194,8 @@ void DrawLevel(Level level ) {
 
     EnemyQueue queue = level.spawn_queue;
     EnemyList enemy_list = CreateEnemyList(queue.capacity);
-    printf("ATTEMPTING TO CREATE PATH!!!!\n");
     Path path = CreatePathFromGrid(&grid);
+    PathSampler sampler = CreatePathSampler(&grid, path, (Vector2){map_size, map_size});
     Vector2 summonerPos = GetTileTypeWorldPosition(&grid, (Vector2){map_size, map_size}, SUMMONER_TILE);
     Vector2 startingPos = GetTileTypeWorldPosition(&grid, (Vector2){map_size, map_size}, START_TILE);
     EnemyQueueSetStartingPosition(&queue, startingPos);
@@ -199,24 +208,25 @@ void DrawLevel(Level level ) {
     GridLookup lookup = LoadGridLookup(camera, heightmap_model, offset);
 
     float time = 0.0f;
-    for (int i = 0; i < path.size; i++) {
-        printf ("%d, %d\n",path.tiles[i].grid_x, path.tiles[i].grid_y);
-    }
     while (!WindowShouldClose())
     {
         time += 1.0f / 60.0f;
-        if (enemy_list.last_enemy > 0)
-            UpdateEnemyPositions(&enemy_list, &grid, &path, (Vector2){map_size, map_size});
-        //printf("time = %f\n", time);
+        if (enemy_list.last_enemy > 0) {
+            UpdateEnemyPositions(&enemy_list, &grid, sampler, (Vector2){map_size, map_size});
+        }
+
+        printf("time = %f\n", time);
         Enemy* enemy = GetNextEnemy(&queue, time);
         if (enemy) {
             AddEnemyToEnemyList(&enemy_list, *enemy);
         }
 
         UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
+
         selectedTile = GetGridIndexFromScreen(lookup);
         if (selectedTile < grid.width * grid.height) {
-            if (grid.grid[selectedTile].type == DEFAULT_TILE)
+            if (grid.grid[selectedTile].type == DEFAULT_TILE
+                && !grid.grid[selectedTile].occupied)
                 isPlacable = 1;
             else isPlacable = 0;
         }
@@ -230,8 +240,11 @@ void DrawLevel(Level level ) {
         DrawModel(heightmap_model, offset, 1.0, WHITE);
         DrawSummoner(scalex, summonerPos);
 
+        qsort(enemy_list.enemies, enemy_list.last_enemy, sizeof(Enemy), CompareEnemyDepth);
+
         for (int i = 0; i < enemy_list.last_enemy; i++ ) {
-            DrawEnemy(&enemy_list.enemies[i], 0.5f * scalex);
+            Enemy* enemy = &enemy_list.enemies[i];
+            DrawEnemy(enemy, 0.5f * scalex, i);
         }
 
         EndMode3D();
@@ -240,6 +253,7 @@ void DrawLevel(Level level ) {
         EndDrawing();
     }
 
+    DestroyPathSampler(sampler);
     DeleteEnemyList(&enemy_list);
     DeleteEnemyQueue(&queue);
     UnloadGridLookup(lookup);

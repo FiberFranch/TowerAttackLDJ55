@@ -1,2 +1,4 @@
 bishop 2
+bishop 3
 bishop 4
+bishop 5
