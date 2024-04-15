@@ -11,7 +11,7 @@ in vec3 fragNormal;
 uniform sampler2D texture0;
 uniform sampler2D texture2;
 uniform vec4 colDiffuse;
-uniform int selectedTile;
+uniform int selectedTile[10];
 uniform int isPlacable;
 
 // Output fragment color
@@ -93,8 +93,10 @@ void main()
     if (isPlacable == 0) {
         highlight = vec4(1.8, 0.9, 0.9, 1.0);
     }
-    if (index == selectedTile) {
-        selection *= highlight;
+    for (int i=0; i < 10; i++) {
+        if (index == selectedTile[i]) {
+            selection *= highlight;
+        }
     }
     finalColor *= selection;
 }

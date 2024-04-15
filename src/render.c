@@ -37,7 +37,8 @@ void AddAnimationToPlay(Animations* animations, AnimatedSprite sprite) {
 }
 
 void DrawAnimations(Animations* animations) {
-    Model model = *GetModelById(MODEL_ID_rectangle);
+    Model model = *GetModelById(MODEL_ID_rectangle2);
+    model.materials[0].shader = animations->animation_shader;
     model.materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *GetTextureById(SPRITE_ID_explosion);
     for (int i = 0; i < animations->capacity; i++) {
         if (! animations->available_slots[i]) {
@@ -51,7 +52,7 @@ void DrawAnimations(Animations* animations) {
                 animations->sprites[i] = animation;
                 printf("Frame=%i\n", frame);
                 SetShaderValue(animations->animation_shader, animations->frameLoc, &frame, SHADER_UNIFORM_INT);
-                DrawModel(model, (Vector3){animation.position.x, 0.0f, animation.position.y}, 1, WHITE);
+                DrawModel(model, (Vector3){animation.position.x, 0.0f, animation.position.y}, 0.5f, WHITE);
             }
         }
     }
@@ -320,7 +321,10 @@ void DrawLevel(Level level) {
 
     int SelectedTileLoc = GetShaderLocation(*GetShaderById(SHADER_ID_map), "selectedTile");
     int IsPlacableLoc = GetShaderLocation(*GetShaderById(SHADER_ID_map), "isPlacable");
-    int selectedTile = 1000000;
+    int highlightedTile[10];
+    for (int i = 0; i < 10;i++) {
+        highlightedTile[i] = 10000000;
+    }
     int isPlacable = 0;
     GridLookup lookup = LoadGridLookup(camera, heightmap_model, offset);
 
@@ -328,7 +332,7 @@ void DrawLevel(Level level) {
     Animations animations = CreateAnimations();
     AnimatedSprite animationTest = {0};
     animationTest.sprite = *GetTextureById(SPRITE_ID_explosion);
-    animationTest.maxTime = 5.0;
+    animationTest.maxTime = 2.0;
     animationTest.nFrames = 8;
     AddAnimationToPlay(&animations, animationTest);
     float time = 0.0f;
@@ -360,14 +364,15 @@ void DrawLevel(Level level) {
         printf("SELECTED SUMMON: %d\n", selected_summon);
 
         UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
-        selectedTile = GetGridIndexFromScreen(lookup);
-        if (selectedTile < grid.width * grid.height) {
-            if (grid.grid[selectedTile].type == DEFAULT_TILE
-                && !grid.grid[selectedTile].occupied)
+        highlightedTile[0] = GetGridIndexFromScreen(lookup);
+        if (highlightedTile[0] < grid.width * grid.height) {
+            if (grid.grid[highlightedTile[0]].type == DEFAULT_TILE
+                && !grid.grid[highlightedTile[0]].occupied)
                 isPlacable = 1;
             else isPlacable = 0;
         }
-        SetShaderValue(*GetShaderById(SHADER_ID_map), SelectedTileLoc, &selectedTile, SHADER_UNIFORM_INT);
+        highlightedTile[1] = 0;
+        SetShaderValueV(*GetShaderById(SHADER_ID_map), SelectedTileLoc, &highlightedTile, SHADER_UNIFORM_INT, 10);
         SetShaderValue(*GetShaderById(SHADER_ID_map), IsPlacableLoc, &isPlacable, SHADER_UNIFORM_INT);
 
         BeginDrawing();
@@ -376,10 +381,10 @@ void DrawLevel(Level level) {
         BeginMode3D(camera);
         DrawModel(heightmap_model, offset, 1.0, WHITE);
         DrawSummoner(scalex, summonerPos);
-        if (selectedTile < grid.width * grid.height) {
-            if (grid.grid[selectedTile].type == DEFAULT_TILE
-                && !grid.grid[selectedTile].occupied)
-                DrawSummoner(scalex, GetWorldPositionFromGrid(&grid, (Vector2){map_size, map_size}, grid.grid[selectedTile].x, grid.grid[selectedTile].y));
+        if (highlightedTile[0] < grid.width * grid.height) {
+            if (grid.grid[highlightedTile[0]].type == DEFAULT_TILE
+                && !grid.grid[highlightedTile[0]].occupied)
+                DrawSummoner(scalex, GetWorldPositionFromGrid(&grid, (Vector2){map_size, map_size}, grid.grid[highlightedTile[0]].x, grid.grid[highlightedTile[0]].y));
         }
 
         // Call draw
