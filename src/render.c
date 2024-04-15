@@ -186,7 +186,9 @@ void DrawLevel(Level level ) {
     EnemyQueue queue = level.spawn_queue;
     EnemyList enemy_list = CreateEnemyList(queue.capacity);
     Path path = CreatePathFromGrid(&grid);
-    Vector2 summonerPos = GetSummonerWorldPosition(&grid, (Vector2){map_size, map_size});
+    Vector2 summonerPos = GetTileTypeWorldPosition(&grid, (Vector2){map_size, map_size}, SUMMONER_TILE);
+    Vector2 startingPos = GetTileTypeWorldPosition(&grid, (Vector2){map_size, map_size}, START_TILE);
+    EnemyQueueSetStartingPosition(&queue, startingPos);
     Model heightmap_model = CreateHeightMapFromGrid(&grid, map_size);
 
     int SelectedTileLoc = GetShaderLocation(*GetShaderById(SHADER_ID_map), "selectedTile");

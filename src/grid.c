@@ -133,10 +133,10 @@ Vector2 GetWorldPositionFromGrid(const Grid* grid, Vector2 dimensions, int i, in
     return Vector2Subtract(position, offset);
 }
 
-Vector2 GetSummonerWorldPosition(const Grid* grid, Vector2 dimensions) {
+Vector2 GetTileTypeWorldPosition(const Grid* grid, Vector2 dimensions, TILE_TYPE type) {
     for (unsigned int i = 0; i < grid->width; i++) {
         for (unsigned int j = 0; j < grid->height; j++) {
-            if (GetTileFromGrid(grid, i, j)->type == SUMMONER_TILE) {
+            if (GetTileFromGrid(grid, i, j)->type == type) {
                 return GetWorldPositionFromGrid(grid, dimensions, i, j);
             }
         }

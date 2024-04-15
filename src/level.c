@@ -45,6 +45,12 @@ void DeleteEnemyQueue(EnemyQueue* queue) {
     free(ptr);
 }
 
+void EnemyQueueSetStartingPosition(EnemyQueue* queue, Vector2 position) {
+    for (unsigned int i = 0; i < queue->capacity; i++) {
+        queue->enemy_spawns->enemy.position = position;
+    }
+}
+
 Enemy* GetNextEnemy(EnemyQueue* queue, float time) {
     if (queue->next_enemy >= queue->capacity) return NULL; // Avoid memory issues when running out of enemies
     EnemySpawn* enemy_spawn = &queue->enemy_spawns[queue->next_enemy];
@@ -229,6 +235,20 @@ void UpdateDamageGrid(SummonList* summons, const OccupationGrid* occupation,
     }
     for (int i = 0; i < summons->last_summon; i++) {
         AttemptCastAbility(&(summons->summons[i]), grid, occupation, damage);
+    }
+}
+
+void ApplyDamageToEnemies(const DamageGrid* damage_grid, const Grid* grid, Vector2 dimensions, EnemyList* enemy_list) {
+    for (unsigned int i = 0; i < enemy_list->last_enemy; i++) {
+        Enemy* enemy = &enemy_list->enemies[i];
+        int* tile_x;
+        int* tile_y;
+        GetTileFromPosition(tile_x, tile_y, grid, enemy->position, dimensions);
+        int damage = damage_grid->damage[(*tile_x) + grid->width * (*tile_y)];
+        enemy->hitpoints -= damage;
+        if (enemy->hitpoints <= 0) {
+            RemoveEnemyFromEnemyList(enemy_list, i);
+        }
     }
 }
 
