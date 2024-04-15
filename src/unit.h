@@ -26,6 +26,10 @@ typedef struct {
 } Summon;
 
 typedef struct {
+
+} SummonedList;
+
+typedef struct {
     int hitpoints, mana;
     int n_summons;
     Vector2 position;
@@ -47,7 +51,9 @@ Enemy GetEnemyById(const char* name);
 
 void DrawEnemy(const Enemy* enemy, float scale, int number);
 
-void DrawSummoner(float scale, Vector2 position);
+void DrawSummoner(float scale, Vector2 position);f (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+
+void DrawSummon(const Summon* summon, float scale);
 
 Summon CreateSummonEvaristo();
 

@@ -198,6 +198,7 @@ void DrawLevel(Level level) {
     AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
     AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
     AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
+
     int selected_summon = 0;
     Path path = CreatePathFromGrid(&grid);
     PathSampler sampler = CreatePathSampler(&grid, path, (Vector2){map_size, map_size});

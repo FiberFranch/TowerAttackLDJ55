@@ -45,6 +45,14 @@ void DrawSummoner(float scale, Vector2 position) {
     DrawModel(summoner, (Vector3){position.x, 0.05 * (sin(GetTime()) + 2.0), position.y}, 2.0f/scale, WHITE);
 }
 
+void DrawSummon(const Summon* summon, float scale) {
+    Model model = *GetModelById(MODEL_ID_rectangle);
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *(summon->sprite);
+    DrawModelEx(model, (Vector3){enemy->position.x, displacement, enemy->position.y},
+                (Vector3){0.0f, 0.0f, 1.0f}, rotation, (Vector3){1.0f / scale, 1.0f / scale, 1.0f / scale}, WHITE);
+}
+
+
 Summon CreateSummonEvaristo() {
     Summon Evaristo;
     Evaristo.max_cooldown = 2.f;
