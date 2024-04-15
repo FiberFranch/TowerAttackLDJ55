@@ -85,42 +85,67 @@ Path CreatePathFromGrid(const Grid* grid) {
             }
         }
     }
+    printf("start: %d %d\nend: %d %d\n", start_i, start_j, end_i, end_j);
+    printf("grid size: %d %d\n", grid->width, grid->width);
     Path path = {0};
-    path.tiles = calloc(200, sizeof(PathTile));
+    path.tiles = calloc(grid->width * grid->height, sizeof(PathTile));
     int pathLength = 0;
     int current_i = start_i;
     int current_j = start_j;
+    PathTile tile;
+    bool next_tile_found;
     while (current_i != end_i && current_j != end_j) {
-        int iteration_i = current_i;
-        int iteration_j = current_j;
-        PathTile tile;
+    //while (current_i != end_i && current_j != end_j && pathLength < grid->width * grid->height) {
+    //while (current_i != end_i && current_j != end_j && pathLength < 5) {
+        //Add tile found to path
         tile.grid_x = current_i;
         tile.grid_y = current_j;
         path.tiles[pathLength] = tile;
         pathLength++;
 
+        next_tile_found = false;
         // Look at neighbours
         for (int x=-1; x <= 1; x++) {
             for (int y=-1; y <= 1; y++) {
                 if (abs(x) == abs(y)) continue;
+                printf ("x y: %d %d\n", x, y);
                 // Check bounds
                 if (current_i + x < 0 || current_i + x >= grid->width ||
                     current_j + y < 0 || current_j + y >= grid->height) continue;
 
-                // Avoid last path tile
-                if (tile.grid_x == current_i + x && tile.grid_y == current_j + y) continue;
+                //Skip previous found tile
+                if (pathLength >= 2 &&
+                    current_i + x == path.tiles[pathLength - 2].grid_x &&
+                    current_j + y == path.tiles[pathLength - 2].grid_y) continue;
 
-                if (GetTileFromGrid(grid, current_i, current_j)->type == PATH_TILE ||
-                    GetTileFromGrid(grid, current_i, current_j)->type == END_TILE) {
+                if (GetTileFromGrid(grid, current_i + x, current_j + y)->type == PATH_TILE ||
+                    GetTileFromGrid(grid, current_i + x, current_j + y)->type == END_TILE) {
+                    printf("current coordinates: %d %d\n", current_i + x, current_j + y);
+                    printf("previous coordinates 1: %d %d\n", path.tiles[pathLength - 1].grid_x, path.tiles[pathLength - 1].grid_y);
+                    printf("previous coordinates 2: %d %d\n\n", path.tiles[pathLength - 2].grid_x, path.tiles[pathLength - 2].grid_y);
+                    //printf("pathLength: %d\n", pathLength);
                     current_i += x;
                     current_j += y;
+                    next_tile_found = true;
+                    break;
                 }
             }
+            if (next_tile_found) break;
         }
-        if (iteration_i == current_i && iteration_j == current_j) {
+        if (! next_tile_found) {
             printf("ERROR::CreatePathFromGrid: The path does not connect with the end Tile\n");
             break;
         }
+    }
+    //Add last tile
+    if (current_i == end_i && current_j == end_j) {
+        tile.grid_x = current_i;
+        tile.grid_y = current_j;
+        path.tiles[pathLength] = tile;
+        pathLength++;
+        path.size = pathLength;
+    } else {
+        printf("ERROR::CreatePathFromGrid: The path does not connect with the end Tile\n");
     }
     return path;
 }

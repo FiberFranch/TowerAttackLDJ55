@@ -291,10 +291,12 @@ void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
     PathTile next_tile;
     float tile_width = map_size.x / grid->width;
     float tile_height = map_size.y / grid->height;
+    //printf("Entered update position function\n");
     for (int i = 0; i < enemies->last_enemy; i++) {
         GetTileFromPosition(&tile_x, &tile_y, grid,
                             enemies->enemies[i].position, map_size);
         index = GetNextTileIndex(tile_x, tile_y, path);
+        //printf("tile: %d, %d\n", tile_x, tile_y);
         if (index != -1){
             if (index == 0) {
                 dir_x = path->tiles[1].grid_x - tile_x;
@@ -303,8 +305,10 @@ void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
                 ComputeDirection(&dir_x, &dir_y, path, index);
             }
             enemies->enemies[i].position.x += dir_x * enemies->enemies[i].speed / 60.f * tile_width;
-            printf("%f\n", enemies->enemies[i].position.x);
+            //printf("%f\n", enemies->enemies[i].position.x);
             enemies->enemies[i].position.y += dir_y * enemies->enemies[i].speed / 60.f * tile_height;
+        } else {
+            printf("ERROR::UpdateEnemyPositions: Current enemy position not found in the path\n");
         }
     }
 }

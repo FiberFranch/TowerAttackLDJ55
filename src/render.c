@@ -185,6 +185,7 @@ void DrawLevel(Level level ) {
 
     EnemyQueue queue = level.spawn_queue;
     EnemyList enemy_list = CreateEnemyList(queue.capacity);
+    printf("ATTEMPTING TO CREATE PATH!!!!\n");
     Path path = CreatePathFromGrid(&grid);
     Vector2 summonerPos = GetTileTypeWorldPosition(&grid, (Vector2){map_size, map_size}, SUMMONER_TILE);
     Vector2 startingPos = GetTileTypeWorldPosition(&grid, (Vector2){map_size, map_size}, START_TILE);
@@ -198,11 +199,15 @@ void DrawLevel(Level level ) {
     GridLookup lookup = LoadGridLookup(camera, heightmap_model, offset);
 
     float time = 0.0f;
+    for (int i = 0; i < path.size; i++) {
+        printf ("%d, %d\n",path.tiles[i].grid_x, path.tiles[i].grid_y);
+    }
     while (!WindowShouldClose())
     {
         time += 1.0f / 60.0f;
-        UpdateEnemyPositions(&enemy_list, &grid, &path, (Vector2){map_size, map_size});
-        printf("time = %f\n", time);
+        if (enemy_list.last_enemy > 0)
+            UpdateEnemyPositions(&enemy_list, &grid, &path, (Vector2){map_size, map_size});
+        //printf("time = %f\n", time);
         Enemy* enemy = GetNextEnemy(&queue, time);
         if (enemy) {
             AddEnemyToEnemyList(&enemy_list, *enemy);
