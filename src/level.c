@@ -266,18 +266,23 @@ void ComputeDirection(int* dir_x, int* dir_y, const Path* path, int index) {
 }
 
 void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
-                          const Path* path, float tile_width, Vector2 map_size) {
+                          const Path* path, float tile_width,
+                          float tile_height, Vector2 map_size) {
     int tile_x, tile_y, index, dir_x, dir_y;
     PathTile next_tile;
     for (int i = 0; i < enemies->last_enemy; i++) {
         GetTileFromPosition(&tile_x, &tile_y, grid,
                             enemies->enemies[i].position, map_size);
         index = GetNextTileIndex(tile_x, tile_y, path);
-        if (index == 0) {
-            dir_x = path->tiles[1].grid_x - tile_x;
-            dir_y = path->tiles[1].grid_y - tile_y;
-        } else {
-            ComputeDirection(&dir_x, &dir_y, path, index);
+        if (index != -1){
+            if (index == 0) {
+                dir_x = path->tiles[1].grid_x - tile_x;
+                dir_y = path->tiles[1].grid_y - tile_y;
+            } else {
+                ComputeDirection(&dir_x, &dir_y, path, index);
+            }
+            enemies->enemies[i].position.x += dir_x * enemies->enemies[i].speed * tile_width;
+            enemies->enemies[i].position.y += dir_y * enemies->enemies[i].speed * tile_height;
         }
     }
 }

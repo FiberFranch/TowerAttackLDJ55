@@ -91,6 +91,6 @@ int GetNextTile(int tile_x, int tile_y, const Path* path);
 
 void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
                           const Path* path, float tile_width,
-                          Vector2 map_size);
+                          float tile_height, Vector2 map_size);
 
 #endif // LEVEL_H_
