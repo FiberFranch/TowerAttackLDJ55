@@ -38,7 +38,6 @@ typedef struct {
     Texture2D sprite;
     Vector2 position;
     float time, maxTime;
-    float speed;
     int nFrames;
 } AnimatedSprite;
 

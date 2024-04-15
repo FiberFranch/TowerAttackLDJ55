@@ -22,7 +22,7 @@ Animations CreateAnimations() {
 }
 
 void DestroyAnimations(Animations animations) {
-    free(animations.available_slots);
+    free(animations.sprites);
     free(animations.available_slots);
 }
 
@@ -40,9 +40,19 @@ void DrawAnimations(Animations* animations) {
     Model model = *GetModelById(MODEL_ID_rectangle);
     model.materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *GetTextureById(SPRITE_ID_explosion);
     for (int i = 0; i < animations->capacity; i++) {
-        if (animations->available_slots[i]) {
-            int frame;
-            SetShaderValue(animations->animation_shader, animations->frameLoc, &frame, SHADER_UNIFORM_INT);
+        if (! animations->available_slots[i]) {
+            AnimatedSprite animation = animations->sprites[i];
+            if (animation.time > animation.maxTime) {
+                animations->available_slots[i] = true;
+            }
+            else {
+                int frame = (int)((animation.time / animation.maxTime) * (animation.nFrames));
+                animation.time += 1.0 / 60.0f;
+                animations->sprites[i] = animation;
+                printf("Frame=%i\n", frame);
+                SetShaderValue(animations->animation_shader, animations->frameLoc, &frame, SHADER_UNIFORM_INT);
+                DrawModel(model, (Vector3){animation.position.x, 0.0f, animation.position.y}, 1, WHITE);
+            }
         }
     }
 }
@@ -315,7 +325,12 @@ void DrawLevel(Level level) {
     GridLookup lookup = LoadGridLookup(camera, heightmap_model, offset);
 
     DrawBatch drawBatch = CreateDrawBatch(1);
-
+    Animations animations = CreateAnimations();
+    AnimatedSprite animationTest = {0};
+    animationTest.sprite = *GetTextureById(SPRITE_ID_explosion);
+    animationTest.maxTime = 5.0;
+    animationTest.nFrames = 8;
+    AddAnimationToPlay(&animations, animationTest);
     float time = 0.0f;
     while (!WindowShouldClose())
     {
@@ -375,6 +390,7 @@ void DrawLevel(Level level) {
 
         // Actually draw the enemies and summons
         DrawDrawBatch(drawBatch);
+        DrawAnimations(&animations);
         EnemiesDealDamageToSummoner(&level.summoner, &enemy_list);
         printf("Summoner Health %i\n", level.summoner.hitpoints);
         EndMode3D();
@@ -384,6 +400,7 @@ void DrawLevel(Level level) {
         ClearDrawBatch(&drawBatch);
     }
 
+    DestroyAnimations(animations);
     DestroyDrawBatch(drawBatch);
     DestroyPathSampler(sampler);
     DeleteEnemyList(&enemy_list);
