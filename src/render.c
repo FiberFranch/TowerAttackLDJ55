@@ -304,6 +304,7 @@ void DrawLevel(Level level) {
                     && !grid.grid[selectedTile].occupied) {
                     selected_summon_unit = summon_list.summons[selected_summon_id];
                     selected_summon_unit.position = GetWorldPositionFromGrid(&grid, (Vector2){map_size, map_size}, grid.grid[selectedTile].grid_x, grid.grid[selectedTile].grid_y);
+                    selected_summon_unit.orientation = selected_summon_orientation;
                     AddSummonToSummonList(&summoned_units, selected_summon_unit);
                     grid.grid[selectedTile].occupied = true;
                 }
@@ -320,6 +321,23 @@ void DrawLevel(Level level) {
             selected_summon_id--;
             if (selected_summon_id < 0)
                 selected_summon_id = summon_list.last_summon - 1;
+        }
+
+        if (IsKeyPressed(KEY_R)) {
+            switch(selected_summon_orientation) {
+                case FACE_DOWN:
+                    selected_summon_orientation = FACE_LEFT;
+                    break;
+                case FACE_LEFT:
+                    selected_summon_orientation = FACE_UP;
+                    break;
+                case FACE_UP:
+                    selected_summon_orientation = FACE_RIGHT;
+                    break;
+                case FACE_RIGHT:
+                    selected_summon_orientation = FACE_DOWN;
+                    break;
+            }
         }
 
         UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
