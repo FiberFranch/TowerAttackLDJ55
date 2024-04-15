@@ -105,10 +105,10 @@ Path CreatePathFromGrid(const Grid* grid) {
 
         next_tile_found = false;
         // Look at neighbours
-
         printf("ROUND %d\n", pathLength);
 
         for (int x=-1; x <= 1; x++) {
+            if (next_tile_found) break;
             for (int y=-1; y <= 1; y++) {
                 if (abs(x) == abs(y)) continue;
                 printf ("x y: %d %d\n", x, y);
@@ -152,14 +152,14 @@ Path CreatePathFromGrid(const Grid* grid) {
                     break;
                 }
             }
-            if (next_tile_found) break;
         }
-        if (! next_tile_found) {
-            printf("ERROR::CreatePathFromGrid: The path does not connect with the end Tile\n");
-            break;
-        }
+        //if (! next_tile_found) {
+        //    printf("ERROR::CreatePathFromGrid: The path does not connect with the end Tile\n");
+        //    break;
+        //}
         printf("\n--------------------------------\n\n");
     }
+    printf("EXITED\nexit coordinates %d %d\n", current_i, current_j);
     //Add last tile
     if (current_i == end_i && current_j == end_j) {
         tile.grid_x = current_i;
