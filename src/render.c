@@ -7,6 +7,57 @@
 #include "level.h"
 #include "unit.h"
 
+
+Animations CreateAnimations() {
+    Animations animations;
+    animations.capacity = 100;
+    animations.sprites = calloc(animations.capacity, sizeof(AnimatedSprite));
+    animations.available_slots = calloc(animations.capacity, sizeof(bool));
+    animations.animation_shader = *GetShaderById(SHADER_ID_animation);
+    animations.frameLoc = GetShaderLocation(animations.animation_shader, "animationFrame");
+    for (int i = 0; i < animations.capacity; i++) {
+        animations.available_slots[i] = true;
+    }
+    return animations;
+}
+
+void DestroyAnimations(Animations animations) {
+    free(animations.sprites);
+    free(animations.available_slots);
+}
+
+void AddAnimationToPlay(Animations* animations, AnimatedSprite sprite) {
+    for (int i = 0; i < animations->capacity; i++) {
+        if (animations->available_slots[i]) {
+            animations->sprites[i] = sprite;
+            animations->available_slots[i] = false;
+            break;
+        }
+    }
+}
+
+void DrawAnimations(Animations* animations) {
+    Model model = *GetModelById(MODEL_ID_rectangle2);
+    model.materials[0].shader = animations->animation_shader;
+    model.materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *GetTextureById(SPRITE_ID_explosion);
+    for (int i = 0; i < animations->capacity; i++) {
+        if (! animations->available_slots[i]) {
+            AnimatedSprite animation = animations->sprites[i];
+            if (animation.time > animation.maxTime) {
+                animations->available_slots[i] = true;
+            }
+            else {
+                int frame = (int)((animation.time / animation.maxTime) * (animation.nFrames));
+                animation.time += 1.0 / 60.0f;
+                animations->sprites[i] = animation;
+                printf("Frame=%i\n", frame);
+                SetShaderValue(animations->animation_shader, animations->frameLoc, &frame, SHADER_UNIFORM_INT);
+                DrawModel(model, (Vector3){animation.position.x, 0.0f, animation.position.y}, 0.5f, WHITE);
+            }
+        }
+    }
+}
+
 void DrawEnemy(DrawBatch* batch, const Enemy* enemy, float scale, int number) {
     float displacement = 0.03f * (sin(5.0f * GetTime()) + 1.0f);
     float rotation = 2.0f * sin(5.0f*GetTime() + 5.0f * number);
@@ -68,7 +119,6 @@ void DrawDrawBatch(DrawBatch batch) {
     Model model = *GetModelById(MODEL_ID_rectangle);
     for (int i = 0; i < batch.size; i++) {
         DrawElement element = batch.elements[i];
-        printf("x = %f, y = %f\n", element.position.x, element.position.z);
         model.materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *element.texture;
         DrawModelEx(model, element.position,
                     element.axis, element.rotation,
@@ -76,8 +126,6 @@ void DrawDrawBatch(DrawBatch batch) {
                     WHITE);
     }
 }
-
-void AddElementToDrawBatch(DrawBatch* batch, DrawElement element);
 
 Camera CreateCamera() {
     Camera3D camera = { 0 };
@@ -277,12 +325,20 @@ void DrawLevel(Level level) {
 
     int SelectedTileLoc = GetShaderLocation(*GetShaderById(SHADER_ID_map), "selectedTile");
     int IsPlacableLoc = GetShaderLocation(*GetShaderById(SHADER_ID_map), "isPlacable");
-    int selectedTile = 1000000;
+    int highlightedTile[10];
+    for (int i = 0; i < 10;i++) {
+        highlightedTile[i] = 10000000;
+    }
     int isPlacable = 0;
     GridLookup lookup = LoadGridLookup(camera, heightmap_model, offset);
 
     DrawBatch drawBatch = CreateDrawBatch(1);
-
+    Animations animations = CreateAnimations();
+    AnimatedSprite animationTest = {0};
+    animationTest.sprite = *GetTextureById(SPRITE_ID_explosion);
+    animationTest.maxTime = 2.0;
+    animationTest.nFrames = 8;
+    AddAnimationToPlay(&animations, animationTest);
     float time = 0.0f;
     while (!WindowShouldClose())
     {
@@ -296,19 +352,24 @@ void DrawLevel(Level level) {
         if (enemy) {
             AddEnemyToEnemyList(&enemy_list, *enemy);
         }
-
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-            selectedTile = GetGridIndexFromScreen(lookup);
-            if (selectedTile < grid.width * grid.height) {
-                if (grid.grid[selectedTile].type == DEFAULT_TILE
-                    && !grid.grid[selectedTile].occupied) {
-                    selected_summon_unit = summon_list.summons[selected_summon_id];
-                    selected_summon_unit.position = GetWorldPositionFromGrid(&grid, (Vector2){map_size, map_size}, grid.grid[selectedTile].grid_x, grid.grid[selectedTile].grid_y);
-                    selected_summon_unit.orientation = selected_summon_orientation;
-                    AddSummonToSummonList(&summoned_units, selected_summon_unit);
-                    grid.grid[selectedTile].occupied = true;
-                }
-            }
+           highlightedTile[0] = GetGridIndexFromScreen(lookup);
+           if (highlightedTile[0] < grid.width * grid.height) {
+               if (grid.grid[highlightedTile[0]].type == DEFAULT_TILE
+                   && !grid.grid[highlightedTile[0]].occupied) {
+                   selected_summon_unit = summon_list.summons[selected_summon_id];
+                   selected_summon_unit.position = GetWorldPositionFromGrid(&grid, (Vector2){map_size, map_size}, grid.grid[highlightedTile[0]].grid_x, grid.grid[highlightedTile[0]].grid_y);
+                   selected_summon_unit.orientation = selected_summon_orientation;
+                   AddSummonToSummonList(&summoned_units, selected_summon_unit);
+                   grid.grid[highlightedTile[0]].occupied = true;
+               }
+           }
+        }
+
+        if (IsKeyPressed(KEY_E)) {
+            selected_summon_id++;
+            if (selected_summon_id >= summon_list.last_summon)
+               selected_summon_id = 0;
         }
 
         if (IsKeyPressed(KEY_E)) {
@@ -341,28 +402,30 @@ void DrawLevel(Level level) {
         }
 
         UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
-        selectedTile = GetGridIndexFromScreen(lookup);
-        if (selectedTile < grid.width * grid.height) {
-            if (grid.grid[selectedTile].type == DEFAULT_TILE
-                && !grid.grid[selectedTile].occupied)
+        highlightedTile[0] = GetGridIndexFromScreen(lookup);
+        if (highlightedTile[0] < grid.width * grid.height) {
+            if (grid.grid[highlightedTile[0]].type == DEFAULT_TILE
+                && !grid.grid[highlightedTile[0]].occupied)
                 isPlacable = 1;
             else isPlacable = 0;
         }
-        SetShaderValue(*GetShaderById(SHADER_ID_map), SelectedTileLoc, &selectedTile, SHADER_UNIFORM_INT);
+        highlightedTile[1] = 0;
+        SetShaderValueV(*GetShaderById(SHADER_ID_map), SelectedTileLoc, &highlightedTile, SHADER_UNIFORM_INT, 10);
         SetShaderValue(*GetShaderById(SHADER_ID_map), IsPlacableLoc, &isPlacable, SHADER_UNIFORM_INT);
 
         BeginDrawing();
         ClearBackground(DARKGRAY);
-        /* UpdateCamera(&camera, CAMERA_FREE); */
+
         BeginMode3D(camera);
         DrawModel(heightmap_model, offset, 1.0, WHITE);
         DrawSummoner(scalex, summonerPos);
-        if (selectedTile < grid.width * grid.height) {
-            if (grid.grid[selectedTile].type == DEFAULT_TILE
-                && !grid.grid[selectedTile].occupied)
-                DrawSummoner(scalex, GetWorldPositionFromGrid(&grid, (Vector2){scalex, scalex}, grid.grid[selectedTile].grid_x, grid.grid[selectedTile].grid_y));
+        if (highlightedTile[0] < grid.width * grid.height) {
+            if (grid.grid[highlightedTile[0]].type == DEFAULT_TILE
+                && !grid.grid[highlightedTile[0]].occupied)
+                DrawSummoner(scalex, GetWorldPositionFromGrid(&grid, (Vector2){map_size, map_size}, grid.grid[highlightedTile[0]].grid_x, grid.grid[highlightedTile[0]].grid_y));
         }
 
+        // Call draw
         for (int i = 0; i < enemy_list.last_enemy; i++ ) {
             Enemy* enemy = &enemy_list.enemies[i];
             DrawEnemy(&drawBatch, enemy, 0.5f * scalex, i);
@@ -373,7 +436,11 @@ void DrawLevel(Level level) {
             DrawSummon(&drawBatch, summon, 0.5f * scalex);
         }
 
+        // Actually draw the enemies and summons
         DrawDrawBatch(drawBatch);
+        DrawAnimations(&animations);
+        EnemiesDealDamageToSummoner(&level.summoner, &enemy_list);
+        printf("Summoner Health %i\n", level.summoner.hitpoints);
         EndMode3D();
 
         DrawFPS(50,50);
@@ -381,6 +448,7 @@ void DrawLevel(Level level) {
         ClearDrawBatch(&drawBatch);
     }
 
+    DestroyAnimations(animations);
     DestroyDrawBatch(drawBatch);
     DestroyPathSampler(sampler);
     DeleteEnemyList(&enemy_list);

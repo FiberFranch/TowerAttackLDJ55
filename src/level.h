@@ -96,4 +96,6 @@ int GetNextTile(int tile_x, int tile_y, const Path* path);
 void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
                           const PathSampler sampler, Vector2 map_size);
 
+void EnemiesDealDamageToSummoner(Summoner* summoner, EnemyList* list);
+
 #endif // LEVEL_H_

@@ -248,6 +248,7 @@ void ApplyDamageToEnemies(const DamageGrid* damage_grid, const Grid* grid, Vecto
         enemy->hitpoints -= damage;
         if (enemy->hitpoints <= 0) {
             RemoveEnemyFromEnemyList(enemy_list, i);
+            i--;
         }
     }
 }
@@ -298,5 +299,16 @@ void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
         enemy->position = SamplePath(sampler, enemy->s);
         float z_fighting_offset = ((float)i)/200.f;
         enemy->position.y += z_fighting_offset;
+    }
+}
+
+void EnemiesDealDamageToSummoner(Summoner* summoner, EnemyList* list) {
+    for (int i = 0; i < list->last_enemy; i++) {
+        Enemy* enemy = &list->enemies[i];
+        if (enemy->s >= 1.0f) {
+            RemoveEnemyFromEnemyList(list, i);
+            summoner->hitpoints -= enemy->damage;
+            i--;
+        }
     }
 }
