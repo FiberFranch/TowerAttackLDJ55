@@ -15,7 +15,7 @@ SUMMONER_TILE,
 typedef struct {
     TILE_TYPE type;
     bool occupied;
-    int x, y;
+    int grid_x, grid_y;
 } GridTile;
 
 typedef struct {

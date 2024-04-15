@@ -262,8 +262,12 @@ void DrawLevel(Level level) {
     AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
     AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
     AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
+    int selected_summon_id = 0;
+    Summon selected_summon_unit;
+    SummonOrientation selected_summon_orientation = FACE_DOWN;
 
-    int selected_summon = 0;
+    SummonList summoned_units = CreateSummonList(grid.width * grid.height);
+
     Path path = CreatePathFromGrid(&grid);
     PathSampler sampler = CreatePathSampler(&grid, path, (Vector2){map_size, map_size});
     Vector2 summonerPos = GetTileTypeWorldPosition(&grid, (Vector2){map_size, map_size}, SUMMONER_TILE);
@@ -293,31 +297,31 @@ void DrawLevel(Level level) {
             AddEnemyToEnemyList(&enemy_list, *enemy);
         }
 
-        /*
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             selectedTile = GetGridIndexFromScreen(lookup);
             if (selectedTile < grid.width * grid.height) {
                 if (grid.grid[selectedTile].type == DEFAULT_TILE
                     && !grid.grid[selectedTile].occupied) {
-
+                    selected_summon_unit = summon_list.summons[selected_summon_id];
+                    selected_summon_unit.grid_x = grid.grid[selectedTile].grid_x;
+                    selected_summon_unit.grid_y = grid.grid[selectedTile].grid_y;
+                    AddSummonToSummonList(&summoned_units, selected_summon_unit);
+                    grid.grid[selectedTile].occupied = true;
                 }
             }
         }
-        */
 
         if (IsKeyPressed(KEY_E)) {
-            selected_summon++;
-            if (selected_summon >= summon_list.last_summon)
-                selected_summon = 0;
+            selected_summon_id++;
+            if (selected_summon_id >= summon_list.last_summon)
+                selected_summon_id = 0;
         }
         
         if (IsKeyPressed(KEY_Q)) {
-            selected_summon--;
-            if (selected_summon < 0)
-                selected_summon = summon_list.last_summon - 1;
+            selected_summon_id--;
+            if (selected_summon_id < 0)
+                selected_summon_id = summon_list.last_summon - 1;
         }
-
-        printf("SELECTED SUMMON: %d\n", selected_summon);
 
         UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
         selectedTile = GetGridIndexFromScreen(lookup);
@@ -339,13 +343,19 @@ void DrawLevel(Level level) {
         if (selectedTile < grid.width * grid.height) {
             if (grid.grid[selectedTile].type == DEFAULT_TILE
                 && !grid.grid[selectedTile].occupied)
-                DrawSummoner(scalex, GetWorldPositionFromGrid(&grid, (Vector2){scalex, scalex}, grid.grid[selectedTile].x, grid.grid[selectedTile].y));
+                DrawSummoner(scalex, GetWorldPositionFromGrid(&grid, (Vector2){scalex, scalex}, grid.grid[selectedTile].grid_x, grid.grid[selectedTile].grid_y));
         }
 
         for (int i = 0; i < enemy_list.last_enemy; i++ ) {
             Enemy* enemy = &enemy_list.enemies[i];
-            DrawEnemy(&drawBatch,enemy, 0.5f * scalex, i);
+            DrawEnemy(&drawBatch, enemy, 0.5f * scalex, i);
         }
+
+        for (int i = 0; i < summoned_units.last_summon; i++ ) {
+            Summon* summon = &summoned_units.summons[i];
+            DrawSummon(&drawBatch, summon, 0.5f * scalex);
+        }
+
         DrawDrawBatch(drawBatch);
         EndMode3D();
 
