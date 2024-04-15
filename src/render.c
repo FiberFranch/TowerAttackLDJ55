@@ -194,8 +194,11 @@ void DrawLevel(Level level) {
 
     EnemyQueue queue = level.spawn_queue;
     EnemyList enemy_list = CreateEnemyList(queue.capacity);
-    SummonList summon_list = CreateSummonList(1);
-    //AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
+    SummonList summon_list = CreateSummonList(5);
+    AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
+    AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
+    AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
+    int selected_summon = 0;
     Path path = CreatePathFromGrid(&grid);
     PathSampler sampler = CreatePathSampler(&grid, path, (Vector2){map_size, map_size});
     Vector2 summonerPos = GetTileTypeWorldPosition(&grid, (Vector2){map_size, map_size}, SUMMONER_TILE);
@@ -217,7 +220,7 @@ void DrawLevel(Level level) {
             UpdateEnemyPositions(&enemy_list, &grid, sampler, (Vector2){map_size, map_size});
         }
 
-        printf("time = %f\n", time);
+        //printf("time = %f\n", time);
         Enemy* enemy = GetNextEnemy(&queue, time);
         if (enemy) {
             AddEnemyToEnemyList(&enemy_list, *enemy);
@@ -234,6 +237,20 @@ void DrawLevel(Level level) {
             }
         }
         */
+
+        if (IsKeyPressed(KEY_E)) {
+            selected_summon++;
+            if (selected_summon >= summon_list.last_summon)
+                selected_summon = 0;
+        }
+        
+        if (IsKeyPressed(KEY_Q)) {
+            selected_summon--;
+            if (selected_summon < 0)
+                selected_summon = summon_list.last_summon - 1;
+        }
+
+        printf("SELECTED SUMMON: %d\n", selected_summon);
 
         UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
 
@@ -253,8 +270,11 @@ void DrawLevel(Level level) {
         BeginMode3D(camera);
         DrawModel(heightmap_model, offset, 1.0, WHITE);
         DrawSummoner(scalex, summonerPos);
-        printf("HERHEHREAFNALDAÑLKDASÑKÑALNÑ %d\n",  grid.grid[selectedTile].x);
-        //DrawSummoner(scalex, GetWorldPositionFromGrid(&grid, (Vector2){scalex, scalex}, grid.grid[selectedTile].x, grid.grid[selectedTile].y));
+        if (selectedTile < grid.width * grid.height) {
+            if (grid.grid[selectedTile].type == DEFAULT_TILE
+                && !grid.grid[selectedTile].occupied)
+                DrawSummoner(scalex, GetWorldPositionFromGrid(&grid, (Vector2){scalex, scalex}, grid.grid[selectedTile].x, grid.grid[selectedTile].y));
+        }
 
         qsort(enemy_list.enemies, enemy_list.last_enemy, sizeof(Enemy), CompareEnemyDepth);
 
