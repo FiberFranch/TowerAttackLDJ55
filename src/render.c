@@ -22,8 +22,8 @@ int CompareDrawElementDepth(const void* a, const void* b) {
     const DrawElement* A = (DrawElement*) a;
     const DrawElement* B = (DrawElement*) b;
 
-    if (A->position.y < B->position.y) return -1;
-    if (A->position.y > B->position.y) return 1;
+    if (A->position.z < B->position.z) return -1;
+    if (A->position.z > B->position.z) return 1;
     else return 0;
 }
 
@@ -56,6 +56,7 @@ void DrawDrawBatch(DrawBatch batch) {
     Model model = *GetModelById(MODEL_ID_rectangle);
     for (int i = 0; i < batch.size; i++) {
         DrawElement element = batch.elements[i];
+        printf("x = %f, y = %f\n", element.position.x, element.position.z);
         model.materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *element.texture;
         DrawModelEx(model, element.position,
                     element.axis, element.rotation,
