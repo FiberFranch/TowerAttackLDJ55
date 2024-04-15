@@ -105,10 +105,21 @@ Path CreatePathFromGrid(const Grid* grid) {
 
         next_tile_found = false;
         // Look at neighbours
+
+        printf("ROUND %d\n", pathLength);
+
         for (int x=-1; x <= 1; x++) {
             for (int y=-1; y <= 1; y++) {
                 if (abs(x) == abs(y)) continue;
                 printf ("x y: %d %d\n", x, y);
+
+                if (GetTileFromGrid(grid, current_i + x, current_j + y)->type == PATH_TILE ||
+                    GetTileFromGrid(grid, current_i + x, current_j + y)->type == END_TILE) {
+                    printf("current coordinates: %d %d\n", path.tiles[pathLength - 1].grid_x, path.tiles[pathLength - 1].grid_y);
+                    printf("possible next coordinates: %d %d\n", current_i + x, current_j + y);
+                    if (pathLength > 1)printf("last coordinates: %d %d\n", path.tiles[pathLength - 2].grid_x, path.tiles[pathLength - 2].grid_y);
+                }
+
                 // Check bounds
                 if (current_i + x < 0 || current_i + x >= grid->width ||
                     current_j + y < 0 || current_j + y >= grid->height) continue;
@@ -120,10 +131,6 @@ Path CreatePathFromGrid(const Grid* grid) {
 
                 if (GetTileFromGrid(grid, current_i + x, current_j + y)->type == PATH_TILE ||
                     GetTileFromGrid(grid, current_i + x, current_j + y)->type == END_TILE) {
-                    printf("current coordinates: %d %d\n", current_i + x, current_j + y);
-                    printf("previous coordinates 1: %d %d\n", path.tiles[pathLength - 1].grid_x, path.tiles[pathLength - 1].grid_y);
-                    printf("previous coordinates 2: %d %d\n\n", path.tiles[pathLength - 2].grid_x, path.tiles[pathLength - 2].grid_y);
-                    //printf("pathLength: %d\n", pathLength);
                     current_i += x;
                     current_j += y;
                     next_tile_found = true;
@@ -136,6 +143,7 @@ Path CreatePathFromGrid(const Grid* grid) {
             printf("ERROR::CreatePathFromGrid: The path does not connect with the end Tile\n");
             break;
         }
+        printf("\n--------------------------------\n\n");
     }
     //Add last tile
     if (current_i == end_i && current_j == end_j) {
