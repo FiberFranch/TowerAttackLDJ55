@@ -303,8 +303,7 @@ void DrawLevel(Level level) {
                 if (grid.grid[selectedTile].type == DEFAULT_TILE
                     && !grid.grid[selectedTile].occupied) {
                     selected_summon_unit = summon_list.summons[selected_summon_id];
-                    selected_summon_unit.grid_x = grid.grid[selectedTile].grid_x;
-                    selected_summon_unit.grid_y = grid.grid[selectedTile].grid_y;
+                    selected_summon_unit.position = GetWorldPositionFromGrid(&grid, (Vector2){map_size, map_size}, grid.grid[selectedTile].grid_x, grid.grid[selectedTile].grid_y);
                     AddSummonToSummonList(&summoned_units, selected_summon_unit);
                     grid.grid[selectedTile].occupied = true;
                 }
