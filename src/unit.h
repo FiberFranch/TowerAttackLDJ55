@@ -35,15 +35,16 @@ typedef struct {
     Texture2D* sprite;
     int hitpoints;
     int damage;
-    int speed;
+    float speed;
     Vector2 position;
+    float s;
 } Enemy;
 
 Enemy CreateEnemy(Texture2D* sprite, const int hitpoints, const int damage, const int speed);
 
 Enemy GetEnemyById(const char* name);
 
-void DrawEnemy(const Enemy* enemy, float scale);
+void DrawEnemy(const Enemy* enemy, float scale, int number);
 
 void DrawSummoner(float scale, Vector2 position);
 

@@ -12,7 +12,7 @@ Enemy CreateEnemy(Texture2D* sprite, const int hitpoints, const int damage, cons
     enemy.hitpoints = hitpoints;
     enemy.damage = damage;
     enemy.speed = speed;
-
+    enemy.s =0.0f;
     return enemy;
 }
 
@@ -22,23 +22,21 @@ Enemy GetEnemyById(const char* name) {
         enemy.sprite = GetTextureById(SPRITE_ID_bishop);
         enemy.hitpoints = 30;
         enemy.damage = 100;
-        enemy.speed = 2;
+        enemy.speed = 1.0f;
         enemy.position = (Vector2){0};
+        enemy.s = 0.0f;
     }
 
     return enemy;
 }
 
-void DrawEnemy(const Enemy* enemy, float scale) {
+void DrawEnemy(const Enemy* enemy, float scale, int number) {
     Model model = *GetModelById(MODEL_ID_rectangle);
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *(enemy->sprite);
-    /* float displacement = 0.05f * (sin(Vector2Length(enemy->position)) + 1.0f); */
-    float displacement = 0.05f * (sin(5.0f * GetTime()) + 1.0f);
-    float rotation = 2.0f * sin(5.0f*GetTime());
-    /* DrawModel(model, (Vector3){enemy->position.x, displacement, enemy->position.y}, 1.0f / scale, WHITE); */
+    float displacement = 0.03f * (sin(5.0f * GetTime()) + 1.0f);
+    float rotation = 2.0f * sin(5.0f*GetTime() + 5.0f * number);
     DrawModelEx(model, (Vector3){enemy->position.x, displacement, enemy->position.y},
                 (Vector3){0.0f, 0.0f, 1.0f}, rotation, (Vector3){1.0f / scale, 1.0f / scale, 1.0f / scale}, WHITE);
-    /* DrawModel(model, (Vector3){0.0f, 0.0f, 0.0f}, 1.0f, WHITE); */
 }
 
 void DrawSummoner(float scale, Vector2 position) {

@@ -1,7 +1,9 @@
 #ifndef GRID_H_
 #define GRID_H_
 
+#include "raymath.h"
 #include <raylib.h>
+#include <stdlib.h>
 typedef enum {
 PATH_TILE,
 DEFAULT_TILE,
@@ -12,6 +14,7 @@ SUMMONER_TILE,
 
 typedef struct {
     TILE_TYPE type;
+    bool occupied;
 } GridTile;
 
 typedef struct {
@@ -45,5 +48,19 @@ Path CreatePathFromGrid(const Grid* grid);
 Vector2 GetWorldPositionFromGrid(const Grid* grid, Vector2 dimensions, int i, int j);
 
 Vector2 GetTileTypeWorldPosition(const Grid* grid, Vector2 dimensions, TILE_TYPE type);
+
+typedef struct {
+    Vector2* references;
+    float* distances;
+    float total_distance;
+    int n_references;
+} PathSampler;
+
+
+PathSampler CreatePathSampler(Grid* grid, Path path, Vector2 dimensions);
+
+Vector2 SamplePath(PathSampler sampler, float s);
+
+void DestroyPathSampler(PathSampler sampler);
 
 #endif // GRID_H_

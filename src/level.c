@@ -47,7 +47,7 @@ void DeleteEnemyQueue(EnemyQueue* queue) {
 
 void EnemyQueueSetStartingPosition(EnemyQueue* queue, Vector2 position) {
     for (unsigned int i = 0; i < queue->capacity; i++) {
-        queue->enemy_spawns->enemy.position = position;
+        queue->enemy_spawns[i].enemy.position = position;
     }
 }
 
@@ -258,4 +258,45 @@ Level LoadLevel(Summoner summoner, const char* grid_file, const char* enemies_fi
     level.spawn_queue = LoadEnemyQueue(enemies_file);
     level.grid = LoadGrid(grid_file);
     return level;
+}
+
+int GetNextTileIndex(int tile_x, int tile_y, const Path* path) {
+    for (int i = 0; i < path->size; i++) {
+        if (path->tiles[i].grid_x == tile_x && path->tiles[i].grid_y == tile_y) {
+            return i + 1;
+        }
+    }
+    return -1;
+}
+
+void ComputeDirection(int* dir_x, int* dir_y, const Path* path, int index) {
+    int dir_prev_x = path->tiles[index - 1].grid_x -
+                     path->tiles[index - 2].grid_x;
+    int dir_prev_y = path->tiles[index - 1].grid_y -
+                     path->tiles[index - 2].grid_y;
+    if (dir_prev_x < 0 || dir_prev_y > 0) {
+        *dir_x = dir_prev_x;
+        *dir_y = dir_prev_y;
+    } else {
+        *dir_x = path->tiles[index].grid_x -
+                 path->tiles[index - 1].grid_x;
+        *dir_y = path->tiles[index].grid_y -
+                 path->tiles[index - 1].grid_y;
+    }
+}
+
+void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
+                          const PathSampler sampler, Vector2 map_size) {
+    int tile_x, tile_y, index, dir_x, dir_y;
+    PathTile next_tile;
+    float tile_width = map_size.x / grid->width;
+    float tile_height = map_size.y / grid->height;
+
+    for (int i = 0; i < enemies->last_enemy; i++) {
+        Enemy* enemy = &enemies->enemies[i];
+        enemy->s += enemy->speed / (60.0f * sampler.total_distance);
+        enemy->position = SamplePath(sampler, enemy->s);
+        float z_fighting_offset = ((float)i)/200.f;
+        enemy->position.y += z_fighting_offset;
+    }
 }
