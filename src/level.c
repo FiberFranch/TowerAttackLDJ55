@@ -47,7 +47,7 @@ void DeleteEnemyQueue(EnemyQueue* queue) {
 
 void EnemyQueueSetStartingPosition(EnemyQueue* queue, Vector2 position) {
     for (unsigned int i = 0; i < queue->capacity; i++) {
-        queue->enemy_spawns->enemy.position = position;
+        queue->enemy_spawns[i].enemy.position = position;
     }
 }
 
@@ -286,10 +286,11 @@ void ComputeDirection(int* dir_x, int* dir_y, const Path* path, int index) {
 }
 
 void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
-                          const Path* path, float tile_width,
-                          float tile_height, Vector2 map_size) {
+                          const Path* path, Vector2 map_size) {
     int tile_x, tile_y, index, dir_x, dir_y;
     PathTile next_tile;
+    float tile_width = map_size.x / grid->width;
+    float tile_height = map_size.y / grid->height;
     for (int i = 0; i < enemies->last_enemy; i++) {
         GetTileFromPosition(&tile_x, &tile_y, grid,
                             enemies->enemies[i].position, map_size);
@@ -301,8 +302,9 @@ void UpdateEnemyPositions(EnemyList* enemies, const Grid* grid,
             } else {
                 ComputeDirection(&dir_x, &dir_y, path, index);
             }
-            enemies->enemies[i].position.x += dir_x * enemies->enemies[i].speed * tile_width;
-            enemies->enemies[i].position.y += dir_y * enemies->enemies[i].speed * tile_height;
+            enemies->enemies[i].position.x += dir_x * enemies->enemies[i].speed / 60.f * tile_width;
+            printf("%f\n", enemies->enemies[i].position.x);
+            enemies->enemies[i].position.y += dir_y * enemies->enemies[i].speed / 60.f * tile_height;
         }
     }
 }

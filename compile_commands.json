@@ -1,0 +1,236 @@
+[
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -g -o CMakeFiles/TowerAttack.dir/src/asset_loader.c.o -c /home/fornf/jams/TowerAttackLDJ55/src/asset_loader.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/src/asset_loader.c",
+  "output": "CMakeFiles/TowerAttack.dir/src/asset_loader.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -g -o CMakeFiles/TowerAttack.dir/src/grid.c.o -c /home/fornf/jams/TowerAttackLDJ55/src/grid.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/src/grid.c",
+  "output": "CMakeFiles/TowerAttack.dir/src/grid.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -g -o CMakeFiles/TowerAttack.dir/src/level.c.o -c /home/fornf/jams/TowerAttackLDJ55/src/level.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/src/level.c",
+  "output": "CMakeFiles/TowerAttack.dir/src/level.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -g -o CMakeFiles/TowerAttack.dir/src/main.c.o -c /home/fornf/jams/TowerAttackLDJ55/src/main.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/src/main.c",
+  "output": "CMakeFiles/TowerAttack.dir/src/main.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -g -o CMakeFiles/TowerAttack.dir/src/render.c.o -c /home/fornf/jams/TowerAttackLDJ55/src/render.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/src/render.c",
+  "output": "CMakeFiles/TowerAttack.dir/src/render.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -g -o CMakeFiles/TowerAttack.dir/src/unit.c.o -c /home/fornf/jams/TowerAttackLDJ55/src/unit.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/src/unit.c",
+  "output": "CMakeFiles/TowerAttack.dir/src/unit.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -isystem /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=gnu99 -o CMakeFiles/raylib.dir/rcore.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/rcore.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/rcore.c",
+  "output": "external/raylib/raylib/CMakeFiles/raylib.dir/rcore.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -isystem /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=gnu99 -o CMakeFiles/raylib.dir/rmodels.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/rmodels.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/rmodels.c",
+  "output": "external/raylib/raylib/CMakeFiles/raylib.dir/rmodels.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -isystem /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=gnu99 -o CMakeFiles/raylib.dir/rshapes.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/rshapes.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/rshapes.c",
+  "output": "external/raylib/raylib/CMakeFiles/raylib.dir/rshapes.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -isystem /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=gnu99 -o CMakeFiles/raylib.dir/rtext.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/rtext.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/rtext.c",
+  "output": "external/raylib/raylib/CMakeFiles/raylib.dir/rtext.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -isystem /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=gnu99 -o CMakeFiles/raylib.dir/rtextures.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/rtextures.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/rtextures.c",
+  "output": "external/raylib/raylib/CMakeFiles/raylib.dir/rtextures.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -isystem /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=gnu99 -o CMakeFiles/raylib.dir/utils.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/utils.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/utils.c",
+  "output": "external/raylib/raylib/CMakeFiles/raylib.dir/utils.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib",
+  "command": "/usr/bin/cc -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src -isystem /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=gnu99 -o CMakeFiles/raylib.dir/raudio.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/raudio.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/raudio.c",
+  "output": "external/raylib/raylib/CMakeFiles/raylib.dir/raudio.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/context.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/context.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/context.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/context.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/init.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/init.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/init.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/init.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/input.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/input.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/input.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/input.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/monitor.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/monitor.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/monitor.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/monitor.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/platform.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/platform.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/platform.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/platform.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/vulkan.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/vulkan.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/vulkan.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/vulkan.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/window.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/window.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/window.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/window.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/egl_context.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/egl_context.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/egl_context.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/egl_context.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/osmesa_context.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/osmesa_context.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/osmesa_context.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/osmesa_context.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_init.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/null_init.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/null_init.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/null_init.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_monitor.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/null_monitor.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/null_monitor.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/null_monitor.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_window.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/null_window.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/null_window.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/null_window.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/null_joystick.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/null_joystick.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/null_joystick.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/null_joystick.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_module.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/posix_module.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/posix_module.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/posix_module.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_time.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/posix_time.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/posix_time.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/posix_time.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_thread.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/posix_thread.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/posix_thread.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/posix_thread.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/x11_init.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/x11_init.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/x11_init.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/x11_init.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/x11_monitor.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/x11_monitor.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/x11_monitor.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/x11_monitor.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/x11_window.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/x11_window.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/x11_window.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/x11_window.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/xkb_unicode.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/xkb_unicode.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/xkb_unicode.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/xkb_unicode.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/glx_context.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/glx_context.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/glx_context.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/glx_context.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/wl_init.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/wl_init.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/wl_init.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/wl_init.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/wl_monitor.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/wl_monitor.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/wl_monitor.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/wl_monitor.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/wl_window.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/wl_window.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/wl_window.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/wl_window.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/linux_joystick.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/linux_joystick.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/linux_joystick.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/linux_joystick.c.o"
+},
+{
+  "directory": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src",
+  "command": "/usr/bin/cc -DHAVE_MEMFD_CREATE -D_DEFAULT_SOURCE -D_GLFW_WAYLAND -D_GLFW_X11 -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/include -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src -I/home/fornf/jams/TowerAttackLDJ55/external/raylib/raylib/external/glfw/src -fno-strict-aliasing -Werror=implicit-function-declaration -Werror=pointer-arith  -g -std=c99 -fPIC -Wall -o CMakeFiles/glfw.dir/posix_poll.c.o -c /home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/posix_poll.c",
+  "file": "/home/fornf/jams/TowerAttackLDJ55/external/raylib/src/external/glfw/src/posix_poll.c",
+  "output": "external/raylib/raylib/external/glfw/src/CMakeFiles/glfw.dir/posix_poll.c.o"
+}
+]

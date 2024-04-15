@@ -201,6 +201,7 @@ void DrawLevel(Level level ) {
     while (!WindowShouldClose())
     {
         time += 1.0f / 60.0f;
+        UpdateEnemyPositions(&enemy_list, &grid, &path, (Vector2){map_size, map_size});
         printf("time = %f\n", time);
         Enemy* enemy = GetNextEnemy(&queue, time);
         if (enemy) {
