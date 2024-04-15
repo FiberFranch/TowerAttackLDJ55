@@ -316,6 +316,10 @@ void DrawLevel(Level level) {
 
     SummonList summoned_units = CreateSummonList(grid.width * grid.height);
 
+    OccupationGrid occupation_grid = CreateOccupationGrid(grid.width, grid.height);
+
+    DamageGrid damage_grid = CreateDamageGrid(grid.width, grid.height);
+
     Path path = CreatePathFromGrid(&grid);
     PathSampler sampler = CreatePathSampler(&grid, path, (Vector2){map_size, map_size});
     Vector2 summonerPos = GetTileTypeWorldPosition(&grid, (Vector2){map_size, map_size}, SUMMONER_TILE);
@@ -352,6 +356,11 @@ void DrawLevel(Level level) {
         if (enemy) {
             AddEnemyToEnemyList(&enemy_list, *enemy);
         }
+
+        UpdateOccupationGrid(&enemy_list, &occupation_grid, &grid, (Vector2){map_size, map_size});
+        UpdateDamageGrid(&summoned_units, &occupation_grid, &damage_grid, &grid, (Vector2){map_size, map_size});
+        ApplyDamageToEnemies(&damage_grid, &grid, (Vector2){map_size, map_size}, &enemy_list);
+
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
            highlightedTile[0] = GetGridIndexFromScreen(lookup);
            if (highlightedTile[0] < grid.width * grid.height) {
@@ -409,7 +418,7 @@ void DrawLevel(Level level) {
                 isPlacable = 1;
             else isPlacable = 0;
         }
-        highlightedTile[1] = 0;
+
         SetShaderValueV(*GetShaderById(SHADER_ID_map), SelectedTileLoc, &highlightedTile, SHADER_UNIFORM_INT, 10);
         SetShaderValue(*GetShaderById(SHADER_ID_map), IsPlacableLoc, &isPlacable, SHADER_UNIFORM_INT);
 
@@ -448,6 +457,8 @@ void DrawLevel(Level level) {
         ClearDrawBatch(&drawBatch);
     }
 
+    DeleteOccupationGrid(&occupation_grid);
+    DeleteDamageGrid(&damage_grid);
     DestroyAnimations(animations);
     DestroyDrawBatch(drawBatch);
     DestroyPathSampler(sampler);

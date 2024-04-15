@@ -241,10 +241,10 @@ void UpdateDamageGrid(SummonList* summons, const OccupationGrid* occupation,
 void ApplyDamageToEnemies(const DamageGrid* damage_grid, const Grid* grid, Vector2 dimensions, EnemyList* enemy_list) {
     for (unsigned int i = 0; i < enemy_list->last_enemy; i++) {
         Enemy* enemy = &enemy_list->enemies[i];
-        int* tile_x;
-        int* tile_y;
-        GetTileFromPosition(tile_x, tile_y, grid, enemy->position, dimensions);
-        int damage = damage_grid->damage[(*tile_x) + grid->width * (*tile_y)];
+        int tile_x;
+        int tile_y;
+        GetTileFromPosition(&tile_x, &tile_y, grid, enemy->position, dimensions);
+        int damage = damage_grid->damage[(tile_x) + grid->width * (tile_y)];
         enemy->hitpoints -= damage;
         if (enemy->hitpoints <= 0) {
             RemoveEnemyFromEnemyList(enemy_list, i);

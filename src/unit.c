@@ -21,7 +21,7 @@ Enemy GetEnemyById(const char* name) {
     Enemy enemy;
     if (strcmp(name, "bishop ")){
         enemy.sprite = GetTextureById(SPRITE_ID_bishop);
-        enemy.hitpoints = 30;
+        enemy.hitpoints = 1;
         enemy.damage = 100;
         enemy.speed = 1.0f;
         enemy.position = (Vector2){0};
