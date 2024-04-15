@@ -378,12 +378,6 @@ void DrawLevel(Level level) {
         if (IsKeyPressed(KEY_E)) {
             selected_summon_id++;
             if (selected_summon_id >= summon_list.last_summon)
-               selected_summon_id = 0;
-        }
-
-        if (IsKeyPressed(KEY_E)) {
-            selected_summon_id++;
-            if (selected_summon_id >= summon_list.last_summon)
                 selected_summon_id = 0;
         }
         
@@ -410,6 +404,22 @@ void DrawLevel(Level level) {
             }
         }
 
+        switch(selected_summon_orientation) {
+            case FACE_DOWN:
+                highlightedTile[1] = highlightedTile[0] + grid.width;
+                break;
+            case FACE_LEFT:
+                highlightedTile[1] = highlightedTile[0] - 1;
+                break;
+            case FACE_UP:
+                highlightedTile[1] = highlightedTile[0] - grid.width;
+                break;
+            case FACE_RIGHT:
+                highlightedTile[1] = highlightedTile[0] + 1;
+                break;
+            }
+
+
         UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
         highlightedTile[0] = GetGridIndexFromScreen(lookup);
         if (highlightedTile[0] < grid.width * grid.height) {
@@ -418,7 +428,10 @@ void DrawLevel(Level level) {
                 isPlacable = 1;
             else isPlacable = 0;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 63960ce1c17a8a11afac4defa666efdfabd1b15a
         SetShaderValueV(*GetShaderById(SHADER_ID_map), SelectedTileLoc, &highlightedTile, SHADER_UNIFORM_INT, 10);
         SetShaderValue(*GetShaderById(SHADER_ID_map), IsPlacableLoc, &isPlacable, SHADER_UNIFORM_INT);
 
