@@ -194,6 +194,8 @@ void DrawLevel(Level level) {
 
     EnemyQueue queue = level.spawn_queue;
     EnemyList enemy_list = CreateEnemyList(queue.capacity);
+    SummonList summon_list = CreateSummonList(1);
+    //AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
     Path path = CreatePathFromGrid(&grid);
     PathSampler sampler = CreatePathSampler(&grid, path, (Vector2){map_size, map_size});
     Vector2 summonerPos = GetTileTypeWorldPosition(&grid, (Vector2){map_size, map_size}, SUMMONER_TILE);
@@ -221,6 +223,18 @@ void DrawLevel(Level level) {
             AddEnemyToEnemyList(&enemy_list, *enemy);
         }
 
+        /*
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            selectedTile = GetGridIndexFromScreen(lookup);
+            if (selectedTile < grid.width * grid.height) {
+                if (grid.grid[selectedTile].type == DEFAULT_TILE
+                    && !grid.grid[selectedTile].occupied) {
+
+                }
+            }
+        }
+        */
+
         UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
 
         selectedTile = GetGridIndexFromScreen(lookup);
@@ -239,6 +253,8 @@ void DrawLevel(Level level) {
         BeginMode3D(camera);
         DrawModel(heightmap_model, offset, 1.0, WHITE);
         DrawSummoner(scalex, summonerPos);
+        printf("HERHEHREAFNALDAÑLKDASÑKÑALNÑ %d\n",  grid.grid[selectedTile].x);
+        //DrawSummoner(scalex, GetWorldPositionFromGrid(&grid, (Vector2){scalex, scalex}, grid.grid[selectedTile].x, grid.grid[selectedTile].y));
 
         qsort(enemy_list.enemies, enemy_list.last_enemy, sizeof(Enemy), CompareEnemyDepth);
 

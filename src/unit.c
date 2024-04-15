@@ -44,3 +44,14 @@ void DrawSummoner(float scale, Vector2 position) {
     summoner.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *GetTextureById(SPRITE_ID_summoner);
     DrawModel(summoner, (Vector3){position.x, 0.05 * (sin(GetTime()) + 2.0), position.y}, 2.0f/scale, WHITE);
 }
+
+Summon CreateSummonEvaristo() {
+    Summon Evaristo;
+    Evaristo.max_cooldown = 2.f;
+    Evaristo.cooldown_timer = 0.f;
+    Evaristo.damage = 10;
+    Evaristo.orientation = FACE_DOWN;
+    Evaristo.ability = PROJECTILE;
+    Evaristo.sprite = GetTextureById(SPRITE_ID_evaristo);
+    return Evaristo;
+}

@@ -17,6 +17,7 @@ FACE_RIGHT,
 } SummonOrientation;
 
 typedef struct {
+    Texture2D* sprite;
     float max_cooldown, cooldown_timer;
     int damage;
     int grid_x, grid_y;
@@ -47,5 +48,7 @@ Enemy GetEnemyById(const char* name);
 void DrawEnemy(const Enemy* enemy, float scale, int number);
 
 void DrawSummoner(float scale, Vector2 position);
+
+Summon CreateSummonEvaristo();
 
 #endif // UNIT_H_

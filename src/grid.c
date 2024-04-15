@@ -38,6 +38,8 @@ Grid LoadGrid(const char *filename) {
         for (int i = 0; i < width; i++) {
             Color pixel = pixels[j * width + i];
             GridTile tile = {0};
+            tile.x = i;
+            tile.y = j;
             tile.type = DEFAULT_TILE;
 
             if (pixel.b == 100) {
