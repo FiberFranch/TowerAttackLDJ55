@@ -2,3 +2,7 @@ bishop 2
 bishop 3
 bishop 4
 bishop 5
+bishop 20
+bishop 21
+bishop 22
+bishop 23

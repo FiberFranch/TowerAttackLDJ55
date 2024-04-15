@@ -40,7 +40,7 @@ void DrawSummoner(float scale, Vector2 position) {
 Summon CreateSummonEvaristo() {
     Summon Evaristo;
     Evaristo.max_cooldown = 2.f;
-    Evaristo.cooldown_timer = 0.f;
+    Evaristo.cooldown_timer = 2.f;
     Evaristo.damage = 10;
     Evaristo.orientation = FACE_DOWN;
     Evaristo.ability = PROJECTILE;

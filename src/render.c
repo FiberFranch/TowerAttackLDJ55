@@ -367,6 +367,8 @@ void DrawLevel(Level level) {
                if (grid.grid[highlightedTile[0]].type == DEFAULT_TILE
                    && !grid.grid[highlightedTile[0]].occupied) {
                    selected_summon_unit = summon_list.summons[selected_summon_id];
+                   selected_summon_unit.grid_x = grid.grid[highlightedTile[0]].grid_x;
+                   selected_summon_unit.grid_y = grid.grid[highlightedTile[0]].grid_y;
                    selected_summon_unit.position = GetWorldPositionFromGrid(&grid, (Vector2){map_size, map_size}, grid.grid[highlightedTile[0]].grid_x, grid.grid[highlightedTile[0]].grid_y);
                    selected_summon_unit.orientation = selected_summon_orientation;
                    AddSummonToSummonList(&summoned_units, selected_summon_unit);
@@ -428,10 +430,6 @@ void DrawLevel(Level level) {
                 isPlacable = 1;
             else isPlacable = 0;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> 63960ce1c17a8a11afac4defa666efdfabd1b15a
         SetShaderValueV(*GetShaderById(SHADER_ID_map), SelectedTileLoc, &highlightedTile, SHADER_UNIFORM_INT, 10);
         SetShaderValue(*GetShaderById(SHADER_ID_map), IsPlacableLoc, &isPlacable, SHADER_UNIFORM_INT);
 
