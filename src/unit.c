@@ -5,6 +5,7 @@
 #include "unit.h"
 #include "asset_loader.h"
 #include "raymath.h"
+#include "render.h"
 
 Enemy CreateEnemy(Texture2D* sprite, const int hitpoints, const int damage, const int speed) {
     Enemy enemy;
@@ -28,15 +29,6 @@ Enemy GetEnemyById(const char* name) {
     }
 
     return enemy;
-}
-
-void DrawEnemy(const Enemy* enemy, float scale, int number) {
-    Model model = *GetModelById(MODEL_ID_rectangle);
-    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = *(enemy->sprite);
-    float displacement = 0.03f * (sin(5.0f * GetTime()) + 1.0f);
-    float rotation = 2.0f * sin(5.0f*GetTime() + 5.0f * number);
-    DrawModelEx(model, (Vector3){enemy->position.x, displacement, enemy->position.y},
-                (Vector3){0.0f, 0.0f, 1.0f}, rotation, (Vector3){1.0f / scale, 1.0f / scale, 1.0f / scale}, WHITE);
 }
 
 void DrawSummoner(float scale, Vector2 position) {

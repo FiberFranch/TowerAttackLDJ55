@@ -1,3 +1,4 @@
+#include "render.h"
 #include <raylib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,14 +7,64 @@
 #include "level.h"
 #include "unit.h"
 
-int CompareEnemyDepth(const void* a, const void* b) {
-    const Enemy* enemyA = (Enemy*) a;
-    const Enemy* enemyB = (Enemy*) b;
+void DrawEnemy(DrawBatch* batch, const Enemy* enemy, float scale, int number) {
+    float displacement = 0.03f * (sin(5.0f * GetTime()) + 1.0f);
+    float rotation = 2.0f * sin(5.0f*GetTime() + 5.0f * number);
+    DrawElement element;
+    element.texture = enemy->sprite;
+    element.position = (Vector3){enemy->position.x, displacement, enemy->position.y};
+    element.axis = (Vector3){0.0f, 0.0f, 1.0f};
+    element.rotation = rotation;
+    element.scale = 1.0f / scale;
+    AddElementToDrawBatch(batch, element);
+}
+int CompareDrawElementDepth(const void* a, const void* b) {
+    const DrawElement* A = (DrawElement*) a;
+    const DrawElement* B = (DrawElement*) b;
 
-    if (enemyA->position.y < enemyB->position.y) return -1;
-    if (enemyA->position.y > enemyB->position.y) return 1;
+    if (A->position.y < B->position.y) return -1;
+    if (A->position.y > B->position.y) return 1;
     else return 0;
 }
+
+void ClearDrawBatch(DrawBatch* batch) {
+    batch->size = 0;
+}
+
+DrawBatch CreateDrawBatch(int starting_capacity) {
+    DrawBatch batch;
+    batch.size = 0;
+    batch.elements = calloc(starting_capacity, sizeof(DrawElement));
+    batch.capacity = starting_capacity;
+    return batch;
+}
+
+void DestroyDrawBatch(DrawBatch batch) { free(batch.elements); }
+
+void AddElementToDrawBatch(DrawBatch* batch, DrawElement element) {
+    if (batch->size >= batch->capacity) {
+        batch->capacity *= 2;
+        batch->elements = realloc(batch->elements, batch->capacity * sizeof(DrawElement));
+    }
+
+    batch->elements[batch->size] = element;
+    batch->size++;
+}
+
+void DrawDrawBatch(DrawBatch batch) {
+    qsort(batch.elements, batch.size, sizeof(DrawElement), CompareDrawElementDepth);
+    Model model = *GetModelById(MODEL_ID_rectangle);
+    for (int i = 0; i < batch.size; i++) {
+        DrawElement element = batch.elements[i];
+        model.materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *element.texture;
+        DrawModelEx(model, element.position,
+                    element.axis, element.rotation,
+                    (Vector3){element.scale, element.scale, element.scale},
+                    WHITE);
+    }
+}
+
+void AddElementToDrawBatch(DrawBatch* batch, DrawElement element);
 
 Camera CreateCamera() {
     Camera3D camera = { 0 };
@@ -207,6 +258,8 @@ void DrawLevel(Level level) {
     int isPlacable = 0;
     GridLookup lookup = LoadGridLookup(camera, heightmap_model, offset);
 
+    DrawBatch drawBatch = CreateDrawBatch(1);
+
     float time = 0.0f;
     while (!WindowShouldClose())
     {
@@ -222,7 +275,6 @@ void DrawLevel(Level level) {
         }
 
         UpdateGridLookupIfResolutionChanges(&lookup, camera, heightmap_model, offset);
-
         selectedTile = GetGridIndexFromScreen(lookup);
         if (selectedTile < grid.width * grid.height) {
             if (grid.grid[selectedTile].type == DEFAULT_TILE
@@ -240,19 +292,19 @@ void DrawLevel(Level level) {
         DrawModel(heightmap_model, offset, 1.0, WHITE);
         DrawSummoner(scalex, summonerPos);
 
-        qsort(enemy_list.enemies, enemy_list.last_enemy, sizeof(Enemy), CompareEnemyDepth);
-
         for (int i = 0; i < enemy_list.last_enemy; i++ ) {
             Enemy* enemy = &enemy_list.enemies[i];
-            DrawEnemy(enemy, 0.5f * scalex, i);
+            DrawEnemy(&drawBatch,enemy, 0.5f * scalex, i);
         }
-
+        DrawDrawBatch(drawBatch);
         EndMode3D();
 
         DrawFPS(50,50);
         EndDrawing();
+        ClearDrawBatch(&drawBatch);
     }
 
+    DestroyDrawBatch(drawBatch);
     DestroyPathSampler(sampler);
     DeleteEnemyList(&enemy_list);
     DeleteEnemyQueue(&queue);

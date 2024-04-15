@@ -44,8 +44,6 @@ Enemy CreateEnemy(Texture2D* sprite, const int hitpoints, const int damage, cons
 
 Enemy GetEnemyById(const char* name);
 
-void DrawEnemy(const Enemy* enemy, float scale, int number);
-
 void DrawSummoner(float scale, Vector2 position);
 
 #endif // UNIT_H_
