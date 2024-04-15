@@ -6,3 +6,12 @@ bishop 20
 bishop 21
 bishop 22
 bishop 23
+bishop 30
+bishop 30
+bishop 30
+bishop 30
+bishop 30
+bishop 30
+bishop 31
+bishop 32
+bishop 33

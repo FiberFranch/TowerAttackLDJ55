@@ -47,3 +47,14 @@ Summon CreateSummonEvaristo() {
     Evaristo.sprite = GetTextureById(SPRITE_ID_evaristo);
     return Evaristo;
 }
+
+Summon CreateSummonFrancisco() {
+    Summon Francisco;
+    Francisco.max_cooldown = 2.f;
+    Francisco.cooldown_timer = 2.f;
+    Francisco.damage = 10;
+    Francisco.orientation = FACE_DOWN;
+    Francisco.ability = WHIRL;
+    Francisco.sprite = GetTextureById(SPRITE_ID_francisco);
+    return Francisco;
+}

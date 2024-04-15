@@ -41,6 +41,8 @@ typedef struct {
     int nFrames;
 } AnimatedSprite;
 
+AnimatedSprite CreateAnimationExplosion();
+
 typedef struct {
     AnimatedSprite* sprites;
     bool* available_slots;
@@ -51,11 +53,11 @@ typedef struct {
 
 Animations CreateAnimations();
 
-void DestroyAnimations(Animations animations);
+void DestroyAnimations();
 
-void AddAnimationToPlay(Animations* animations, AnimatedSprite sprite);
+void AddAnimationToPlay(AnimatedSprite sprite);
 
-void DrawAnimations(Animations* animations);
+void DrawAnimations();
 
 
 #endif // RENDER_H_

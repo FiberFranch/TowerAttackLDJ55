@@ -48,6 +48,8 @@ Enemy GetEnemyById(const char* name);
 
 Summon CreateSummonEvaristo();
 
+Summon CreateSummonFrancisco();
+
 void DrawSummoner(float scale, Vector2 position);
 
 #endif // UNIT_H_

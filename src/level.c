@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "render.h"
 #include "unit.h"
 #include "level.h"
 #include "grid.h"
@@ -187,8 +188,8 @@ bool AttemptCastAbility(Summon* summon, const Grid* grid,
                         const OccupationGrid* occupation, DamageGrid* damage) {
     bool result = false;
     summon->cooldown_timer += 1 / 60.0f;
+    AnimatedSprite explosion = CreateAnimationExplosion();
     if (summon->cooldown_timer >= summon->max_cooldown) {
-        printf("hello1\n");
         switch(summon->ability) {
             case PROJECTILE:
             {
@@ -197,7 +198,12 @@ bool AttemptCastAbility(Summon* summon, const Grid* grid,
                 result = AttemptDealDamage(summon, grid, damage, occupation,
                                            summon->grid_x + x,
                                            summon->grid_y + y);
-                if (result) summon->cooldown_timer = 0.0f;
+                if (result) {
+                    summon->cooldown_timer = 0.0f;
+                    explosion.position = GetWorldPositionFromGrid(grid, (Vector2){5.0, 5.0}, summon->grid_x + x,  summon->grid_y + y);
+                    explosion.position.y += 0.1;
+                    AddAnimationToPlay(explosion);
+                }
                 break;
             }
             case FLAMES:
@@ -209,7 +215,10 @@ bool AttemptCastAbility(Summon* summon, const Grid* grid,
                                                summon->grid_x + x + offset * (-y),
                                                summon->grid_y + y + offset * x) || result;
                 }
-                if (result) summon->cooldown_timer = 0.0f;
+                if (result)
+                {
+                    summon->cooldown_timer = 0.0f;
+                }
                 break;
             }
             case WHIRL:
@@ -223,7 +232,18 @@ bool AttemptCastAbility(Summon* summon, const Grid* grid,
                         }
                     }
                 }
-                if (result) summon->cooldown_timer = 0.0f;
+                if (result) {
+                    summon->cooldown_timer = 0.0f;
+                    for (int x = -1; x <= 1; x++) {
+                        for (int y = -1; y <= 1; y++) {
+                            if (x != 0 && y != 0) {
+                                explosion.position = GetWorldPositionFromGrid(grid, (Vector2){5.0, 5.0}, summon->grid_x + x,  summon->grid_y + y);
+                                explosion.position.y += 0.1;
+                                AddAnimationToPlay(explosion);
+                            }
+                        }
+                    }
+                }
                 break;
             }
             default:
@@ -240,7 +260,6 @@ void UpdateDamageGrid(SummonList* summons, const OccupationGrid* occupation,
     }
     for (int i = 0; i < summons->last_summon; i++) {
         bool result = AttemptCastAbility(&(summons->summons[i]), grid, occupation, damage);
-        printf("result = %b\n", result);
     }
 }
 

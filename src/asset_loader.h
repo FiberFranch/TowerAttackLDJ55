@@ -10,6 +10,7 @@
     SPRITE(summoner) \
     SPRITE(bishop) \
     SPRITE(evaristo) \
+    SPRITE(francisco) \
     SPRITE(default) \
     SPRITE(plant) \
     SPRITE(map_test) \

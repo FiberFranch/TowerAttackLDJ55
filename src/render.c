@@ -1,5 +1,6 @@
 #include "render.h"
 #include <raylib.h>
+#include <rlgl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "asset_loader.h"
@@ -7,6 +8,16 @@
 #include "level.h"
 #include "unit.h"
 
+
+Animations animations;
+
+AnimatedSprite CreateAnimationExplosion() {
+    AnimatedSprite animationExplosion = {0};
+    animationExplosion.sprite = *GetTextureById(SPRITE_ID_explosion);
+    animationExplosion.maxTime = 1.0;
+    animationExplosion.nFrames = 8;
+    return animationExplosion;
+}
 
 Animations CreateAnimations() {
     Animations animations;
@@ -21,37 +32,37 @@ Animations CreateAnimations() {
     return animations;
 }
 
-void DestroyAnimations(Animations animations) {
+void DestroyAnimations() {
     free(animations.sprites);
     free(animations.available_slots);
 }
 
-void AddAnimationToPlay(Animations* animations, AnimatedSprite sprite) {
-    for (int i = 0; i < animations->capacity; i++) {
-        if (animations->available_slots[i]) {
-            animations->sprites[i] = sprite;
-            animations->available_slots[i] = false;
+void AddAnimationToPlay(AnimatedSprite sprite) {
+    for (int i = 0; i < animations.capacity; i++) {
+        if (animations.available_slots[i]) {
+            animations.sprites[i] = sprite;
+            animations.available_slots[i] = false;
             break;
         }
     }
 }
 
-void DrawAnimations(Animations* animations) {
+void DrawAnimations() {
     Model model = *GetModelById(MODEL_ID_rectangle2);
-    model.materials[0].shader = animations->animation_shader;
+    model.materials[0].shader = animations.animation_shader;
     model.materials[0].maps[MATERIAL_MAP_ALBEDO].texture = *GetTextureById(SPRITE_ID_explosion);
-    for (int i = 0; i < animations->capacity; i++) {
-        if (! animations->available_slots[i]) {
-            AnimatedSprite animation = animations->sprites[i];
+    for (int i = 0; i < animations.capacity; i++) {
+        if (! animations.available_slots[i]) {
+            AnimatedSprite animation = animations.sprites[i];
             if (animation.time > animation.maxTime) {
-                animations->available_slots[i] = true;
+                animations.available_slots[i] = true;
             }
             else {
                 int frame = (int)((animation.time / animation.maxTime) * (animation.nFrames));
                 animation.time += 1.0 / 60.0f;
-                animations->sprites[i] = animation;
+                animations.sprites[i] = animation;
                 printf("Frame=%i\n", frame);
-                SetShaderValue(animations->animation_shader, animations->frameLoc, &frame, SHADER_UNIFORM_INT);
+                SetShaderValue(animations.animation_shader, animations.frameLoc, &frame, SHADER_UNIFORM_INT);
                 DrawModel(model, (Vector3){animation.position.x, 0.0f, animation.position.y}, 0.5f, WHITE);
             }
         }
@@ -297,8 +308,10 @@ int GetGridIndexFromScreen(GridLookup lookup) {
 }
 
 void DrawLevel(Level level) {
-    Camera camera = CreateCamera();
+    level.summoner.hitpoints = 1;
 
+    Camera camera = CreateCamera();
+    rlEnableDepthTest();
     const float map_size = 5.0f;
     const Vector3 offset = (Vector3){-0.5f *map_size, 0.0, -0.5f *map_size};
     Grid grid = level.grid;
@@ -308,8 +321,7 @@ void DrawLevel(Level level) {
     EnemyList enemy_list = CreateEnemyList(queue.capacity);
     SummonList summon_list = CreateSummonList(5);
     AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
-    AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
-    AddSummonToSummonList(&summon_list, CreateSummonEvaristo());
+    AddSummonToSummonList(&summon_list, CreateSummonFrancisco());
     int selected_summon_id = 0;
     Summon selected_summon_unit;
     SummonOrientation selected_summon_orientation = FACE_DOWN;
@@ -337,12 +349,8 @@ void DrawLevel(Level level) {
     GridLookup lookup = LoadGridLookup(camera, heightmap_model, offset);
 
     DrawBatch drawBatch = CreateDrawBatch(1);
-    Animations animations = CreateAnimations();
-    AnimatedSprite animationTest = {0};
-    animationTest.sprite = *GetTextureById(SPRITE_ID_explosion);
-    animationTest.maxTime = 2.0;
-    animationTest.nFrames = 8;
-    AddAnimationToPlay(&animations, animationTest);
+    animations = CreateAnimations();
+
     float time = 0.0f;
     while (!WindowShouldClose())
     {
@@ -452,7 +460,15 @@ void DrawLevel(Level level) {
         if (highlightedTile[0] < grid.width * grid.height) {
             if (grid.grid[highlightedTile[0]].type == DEFAULT_TILE
                 && !grid.grid[highlightedTile[0]].occupied)
-                DrawSummoner(scalex, GetWorldPositionFromGrid(&grid, (Vector2){map_size, map_size}, grid.grid[highlightedTile[0]].grid_x, grid.grid[highlightedTile[0]].grid_y));
+            {
+                DrawElement element = {0};
+                element.texture = summon_list.summons[selected_summon_id].sprite;
+                element.axis = (Vector3) {0.0, 1.0, 0.0};
+                Vector2 position = GetWorldPositionFromGrid(&grid, (Vector2){map_size, map_size}, grid.grid[highlightedTile[0]].grid_x, grid.grid[highlightedTile[0]].grid_y);
+                element.position = (Vector3){position.x, 0.0f, position.y};
+                element.scale = 0.5f;
+                AddElementToDrawBatch(&drawBatch, element);
+            }
         }
 
         // Call draw
@@ -468,10 +484,18 @@ void DrawLevel(Level level) {
 
         // Actually draw the enemies and summons
         DrawDrawBatch(drawBatch);
-        DrawAnimations(&animations);
+        // Draw explosions
+        DrawAnimations();
+
         EnemiesDealDamageToSummoner(&level.summoner, &enemy_list);
         printf("Summoner Health %i\n", level.summoner.hitpoints);
         EndMode3D();
+
+        if (level.summoner.hitpoints < 0) {
+            int offset = MeasureText("GAME OVER!", GetScreenWidth() / 10.0f);
+            DrawText("GAME OVER!", 0.5f*GetScreenWidth()-offset/2.0f,
+                     0.5f*GetScreenHeight() - GetScreenWidth() / 5.0f, GetScreenWidth() / 10.0f, RED);
+        }
 
         DrawFPS(50,50);
         EndDrawing();
