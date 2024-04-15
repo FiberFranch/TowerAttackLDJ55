@@ -21,6 +21,7 @@ typedef struct {
     float max_cooldown, cooldown_timer;
     int damage;
     int grid_x, grid_y;
+    Vector2 position;
     SummonOrientation orientation;
     Ability ability;
 } Summon;
@@ -49,12 +50,8 @@ Enemy CreateEnemy(Texture2D* sprite, const int hitpoints, const int damage, cons
 
 Enemy GetEnemyById(const char* name);
 
-void DrawEnemy(const Enemy* enemy, float scale, int number);
-
-void DrawSummoner(float scale, Vector2 position);f (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-
-void DrawSummon(const Summon* summon, float scale);
-
 Summon CreateSummonEvaristo();
+
+void DrawSummoner(float scale, Vector2 position);
 
 #endif // UNIT_H_
