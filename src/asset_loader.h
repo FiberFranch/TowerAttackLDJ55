@@ -13,6 +13,7 @@
     SPRITE(default) \
     SPRITE(plant) \
     SPRITE(map_test) \
+    SPRITE(explosion) \
     SPRITE(heightmap)
 
 // Mehses should be obj files placed inside the assets/ directory
@@ -22,6 +23,7 @@
 
 #define LIST_OF_SHADERS \
     SHADER(map) \
+    SHADER(animation) \
     SHADER(lookup) \
     SHADER(lighting)
 

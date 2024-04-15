@@ -34,5 +34,29 @@ void DrawEnemy(DrawBatch* batch, const Enemy* enemy, float scale, int number);
 
 void DrawSummon(DrawBatch* batch, const Summon* summon, float scale);
 
+typedef struct {
+    Texture2D sprite;
+    Vector2 position;
+    float time, maxTime;
+    float speed;
+    int nFrames;
+} AnimatedSprite;
+
+typedef struct {
+    AnimatedSprite* sprites;
+    bool* available_slots;
+    Shader animation_shader;
+    int capacity;
+    int frameLoc;
+} Animations;
+
+Animations CreateAnimations();
+
+void DestroyAnimations(Animations animations);
+
+void AddAnimationToPlay(Animations* animations, AnimatedSprite sprite);
+
+void DrawAnimations(Animations* animations);
+
 
 #endif // RENDER_H_
